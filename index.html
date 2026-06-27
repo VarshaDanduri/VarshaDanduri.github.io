@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Varsha Danduri</title>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Lato', sans-serif;
+      font-weight: 300;
+      background: #f8f8f8;
+      color: #333;
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    /* NAV */
+    nav {
+      background: rgba(248, 248, 248, 0.7);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(0,0,0,0.08);
+      padding: 0 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 56px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 10;
+    }
+
+    .nav-name {
+      font-weight: 700;
+      font-size: 1rem;
+      color: #333;
+      text-decoration: none;
+    }
+
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 1.8rem;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: #555;
+      font-size: 0.9rem;
+    }
+
+    .nav-links a:hover { color: #000; }
+    .nav-links a.active { color: #000; font-weight: 400; }
+
+    /* MAIN LAYOUT */
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 5rem 2rem 4rem;
+    }
+
+    /* ABOUT */
+    .about {
+      display: flex;
+      gap: 2.5rem;
+      align-items: flex-start;
+      margin-bottom: 4rem;
+      padding-top: 2rem;
+    }
+
+    .about-placeholder {
+      width: 130px;
+      height: 130px;
+      border-radius: 50%;
+      background: #ddd;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #999;
+      font-size: 0.75rem;
+      text-align: center;
+    }
+
+    .about-text h1 {
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin-bottom: 0.6rem;
+    }
+
+    .about-text p {
+      color: #555;
+      font-size: 0.95rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .social-links {
+      margin-top: 0.8rem;
+      display: flex;
+      gap: 0.8rem;
+    }
+
+    .social-links a {
+      color: #555;
+      font-size: 0.85rem;
+      text-decoration: none;
+      border-bottom: 1px solid #ccc;
+    }
+
+    .social-links a:hover { color: #000; border-color: #000; }
+
+    /* SECTION */
+    h2 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #333;
+      border-bottom: 1px solid #e0e0e0;
+      padding-bottom: 0.4rem;
+      margin-bottom: 1.5rem;
+    }
+
+    /* PROJECT GRID */
+    .projects {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 1.4rem;
+      margin-bottom: 5rem;
+    }
+
+    .project-card {
+      background: #fff;
+      border: 1px solid #e4e4e4;
+      border-radius: 6px;
+      overflow: hidden;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+      transition: box-shadow 0.15s;
+    }
+
+    .project-card:hover {
+      box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+    }
+
+    .project-thumb {
+      width: 100%;
+      aspect-ratio: 16/9;
+      object-fit: cover;
+      display: block;
+    }
+
+    .project-thumb-placeholder {
+      width: 100%;
+      aspect-ratio: 16/9;
+      background: #e8e8e8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .project-thumb-placeholder span {
+      font-size: 0.75rem;
+      color: #aaa;
+    }
+
+    .project-info {
+      padding: 0.9rem 1rem;
+    }
+
+    .project-name {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: #222;
+      margin-bottom: 0.2rem;
+    }
+
+    .project-subtitle {
+      font-size: 0.8rem;
+      color: #777;
+      margin-bottom: 0.5rem;
+    }
+
+    .project-tags {
+      font-size: 0.75rem;
+      color: #999;
+      font-style: italic;
+    }
+
+    /* FOOTER */
+    footer {
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.8rem;
+      color: #aaa;
+      border-top: 1px solid #e0e0e0;
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-name" href="#about">Varsha Danduri</a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#portfolio" class="active">Portfolio</a></li>
+    <!-- <li><a href="resume.pdf" target="_blank">Resume</a></li> -->
+  </ul>
+</nav>
+
+<div class="container">
+
+  <!-- ABOUT -->
+  <div class="about" id="about">
+    <!-- ✏️ Replace with your photo: <img src="photo.jpg" alt="Varsha Danduri" style="width:130px;height:130px;border-radius:50%;object-fit:cover;flex-shrink:0;" /> -->
+    <div class="about-placeholder">photo</div>
+    <div class="about-text">
+      <h1>Varsha Danduri</h1>
+      <p>
+        Hi! I'm a student passionate about [your field]. I enjoy [what you love doing]
+        and building things that make a difference.
+      </p>
+      <p>Feel free to explore my portfolio, or connect with me below.</p>
+      <div class="social-links">
+        <a href="https://github.com/" target="_blank">GitHub</a>
+        <a href="https://linkedin.com/" target="_blank">LinkedIn</a>
+        <a href="mailto:varshadanduri@gmail.com">Email</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROJECTS -->
+  <div id="portfolio">
+    <h2>Portfolio</h2>
+    <div class="projects">
+
+      <!-- ✏️ SAMPLE PROJECT -->
+      <a class="project-card" href="#" target="_blank">
+        <div class="project-thumb-placeholder"><span>screenshot</span></div>
+        <div class="project-info">
+          <p class="project-name">Sample Project Title</p>
+          <p class="project-subtitle">Short description of what this project does</p>
+          <p class="project-tags">Python, React, API</p>
+        </div>
+      </a>
+
+      <!-- ✏️ PASTE MORE PROJECT CARDS HERE -->
+
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  © 2026 Varsha Danduri · Hosted on <a href="https://pages.github.com" style="color:#aaa;">GitHub Pages</a>
+</footer>
+
+</body>
+</html>
