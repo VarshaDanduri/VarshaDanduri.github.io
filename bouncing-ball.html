@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bouncing Ball — Varsha Danduri</title>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<nav>
+  <a class="nav-name" href="index.html">Varsha Danduri</a>
+  <ul class="nav-links">
+    <li><a href="index.html#about">About</a></li>
+    <li><a href="index.html#portfolio" class="active">Portfolio</a></li>
+  </ul>
+</nav>
+
+<div class="container container--narrow">
+
+  <a class="back-link" href="index.html#portfolio">← Back to Portfolio</a>
+
+  <header class="project-header">
+    <h1>Bouncing Ball</h1>
+    <p class="project-tags">OpenGL · GLSL · C++ · GPU Physics</p>
+  </header>
+
+  <article class="project-body">
+    <p>
+      An OpenGL simulation that parallelizes hundreds of bouncing balls on the GPU. Each ball's position and velocity
+      live in a 1^N floating-point texture, updated every frame by a physics fragment shader.
+      Collisions use the law of conservation of momentum; wall bounces keep balls inside the viewport.
+    </p>
+
+    <figure>
+      <video src="assets/bouncing-ball/bouncing-ball-video.mp4" controls playsinline autoplay loop muted></video>
+      <figcaption>Multiple balls colliding in parallel</figcaption>
+    </figure>
+
+    <h3>Ball state stored in a texture</h3>
+    <p>
+      Every ball is packed into one row of an <code>RGBA32F</code> texture: R and G hold position, B and A hold velocity.
+      C++ initializes random positions and velocities, then ping-pongs between two textures each frame so the physics
+      shader always reads last frame's state and writes the next.
+    </p>
+
+<pre><code>// each ball = one texel: (x, y, vx, vy)
+ballData[i*4 + 0] = ...; // x
+ballData[i*4 + 1] = ...; // y
+ballData[i*4 + 2] = cos(angle) * speed; // vx
+ballData[i*4 + 3] = sin(angle) * speed; // vy
+
+GLuint tex[2];
+tex[0] = makeStateTexture(NUM_BALLS, ballData.data());
+tex[1] = makeStateTexture(NUM_BALLS, nullptr);</code></pre>
+
+    <h3>Physics pass — one fragment per ball</h3>
+    <p>
+      A fullscreen quad is drawn to an offscreen framebuffer sized <code>NUM_BALLS × 1</code>. Each fragment looks up
+      its own ball with <code>gl_FragCoord.x</code>, reads state from the input texture, resolves collisions against
+      every other ball, bounces off walls, applies damping, and integrates position forward by delta time.
+    </p>
+
+<pre><code>int i = int(gl_FragCoord.x);
+vec4 self = texelFetch(uState, ivec2(i, 0), 0);
+vec2 pos = self.xy;
+vec2 vel = self.zw;</code></pre>
+
+    <h3>Ball-to-ball collision — conservation of momentum</h3>
+    <p>
+      For each pair of overlapping balls, the shader computes the collision normal and checks whether they are moving
+      toward each other. If so, velocity is projected along the normal and reflected — the impulse that conserves
+      momentum for equal-mass spheres colliding elastically along the contact normal.
+    </p>
+
+<pre><code>vec2 diff = pos - other.xy;
+float dist = length(diff);
+if (dist &lt; minDist && dist > 0.0001) {
+  vec2 n = diff / dist;
+  float dvDot = dot(vel - v2, n);
+  if (dvDot &lt; 0.0) {
+    vel -= dvDot * n;
+  }
+}</code></pre>
+
+    <p>
+      Because each ball's fragment runs independently and writes only its own output, ball <code>j</code> applies the
+      same logic when it processes ball <code>i</code> — both velocities update in parallel without a serial loop on the CPU.
+    </p>
+
+    <h3>Wall bounce and integration</h3>
+    <p>
+      After ball collisions, the shader clamps position inside the bounds and flips velocity to bounce off each wall.
+      A small damping factor prevents energy from growing unbounded, then position is integrated with
+      <code>pos += vel * uDelta</code>.
+    </p>
+
+<pre><code>if (pos.x - uRadius &lt; -1.0) { pos.x = -1.0 + uRadius; vel.x = abs(vel.x); }
+if (pos.x + uRadius >  1.0) { pos.x =  1.0 - uRadius; vel.x = -abs(vel.x); }
+// ... same for y walls ...
+
+vel *= 0.99999;
+pos += vel * uDelta;
+newState = vec4(pos, vel);</code></pre>
+
+    <p>
+      C++ drives the ping-pong each frame: bind the write FBO, run the physics program, swap textures, then render.
+    </p>
+
+<pre><code>glBindFramebuffer(GL_FRAMEBUFFER, fbo[1 - current]);
+glViewport(0, 0, NUM_BALLS, 1);
+glUseProgram(physProg);
+glBindTexture(GL_TEXTURE_2D, tex[current]);
+glDrawArrays(GL_TRIANGLES, 0, 6);
+current = 1 - current;</code></pre>
+
+    <h3>Render pass — instanced draw for all balls</h3>
+    <p>
+      A separate render shader draws every ball in one instanced call. <code>gl_InstanceID</code> selects which texel
+      to read; the unit quad is scaled by radius and offset to the ball's position. The fragment shader discards
+      corners outside the circle and assigns each ball a unique color from a hash of its index.
+    </p>
+
+<pre><code>// render.vert.glsl
+vec4 state = texelFetch(uState, ivec2(gl_InstanceID, 0), 0);
+vec2 worldPos = state.xy + aQuadPos * uRadius;
+gl_Position = vec4(worldPos, 0.0, 1.0);
+
+// main.cpp — one draw call for every ball
+glDrawArraysInstanced(GL_TRIANGLES, 0, 6, NUM_BALLS);</code></pre>
+
+<pre><code>// render.frag.glsl
+float dist = length(vLocalPos);
+if (dist > 1.0) discard;
+
+float r = fract(sin(id * 127.1) * 43758.5);
+float g = fract(sin(id * 269.5) * 23421.6);
+float b = fract(sin(id * 419.2) * 67890.3);
+FragColor = vec4(r, g, b, 1.0);</code></pre>
+
+    <p>
+      <a href="https://github.com/VarshaDanduri/bouncing-ball" target="_blank">View source on GitHub →</a>
+    </p>
+  </article>
+
+</div>
+
+<footer>
+  © 2026 Varsha Danduri · Hosted on <a href="https://pages.github.com">GitHub Pages</a>
+</footer>
+
+</body>
+</html>

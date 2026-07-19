@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Metal Shader — Varsha Danduri</title>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<nav>
+  <a class="nav-name" href="index.html">Varsha Danduri</a>
+  <ul class="nav-links">
+    <li><a href="index.html#about">About</a></li>
+    <li><a href="index.html#portfolio" class="active">Portfolio</a></li>
+  </ul>
+</nav>
+
+<div class="container container--narrow">
+
+  <a class="back-link" href="index.html#portfolio">← Back to Portfolio</a>
+
+  <header class="project-header">
+    <h1>Metal Shader</h1>
+    <p class="project-tags">Blender · Shader Nodes · Procedural Materials</p>
+  </header>
+
+  <article class="project-body">
+    <p>
+      A procedural metal material built in Blender's shader node editor. The goal was a weathered metallic surface
+      covered in water droplets — built up layer by layer from noise textures, through normal mapping, to a final
+      metallic BSDF.
+    </p>
+
+    <figure>
+      <img src="assets/metal-shader/rigged-multifractal.png" alt="Musgrave multifractal mapped onto a sphere" />
+      <figcaption>Musgrave multifractal mapped onto the sphere</figcaption>
+    </figure>
+
+    <p>
+      I started with a Musgrave texture set to multifractal mode, mapped onto the sphere's surface coordinates.
+      This gave a base layer of organic variation — streaky, irregular bright spots against a dark field that could
+      drive surface detail later.
+    </p>
+
+    <figure>
+      <img src="assets/metal-shader/original-multifractal.png" alt="Distorted Voronoi noise on the sphere" />
+      <figcaption>Distorted Voronoi defining droplet regions</figcaption>
+    </figure>
+
+    <p>
+      On top of that I layered a Voronoi texture, distorted with a Mapping node and Vector Math to break up the
+      regular cell pattern. The result is soft, blob-like regions across the surface — the shapes that would become
+      individual water droplets.
+    </p>
+
+    <figure>
+      <img src="assets/metal-shader/normal-bump.png" alt="First normal map pass with small bumps" />
+      <figcaption>First normal map pass</figcaption>
+    </figure>
+
+    <p>
+      Feeding the combined noise into a Normal Map node gave the first bump pass. The droplets read as small raised
+      spots on the surface, but the scale was too fine and the shapes too uniform — the green and blue normal
+      visualization shows the tangent-space directions before any metallic shading is applied.
+    </p>
+
+    <figure>
+      <img src="assets/metal-shader/better-bump.png" alt="Tuned Musgrave with larger droplet bumps" />
+      <figcaption>Tuned Musgrave — larger droplet bumps</figcaption>
+    </figure>
+
+    <p>
+      Adjusting the Musgrave scale and dimension settings pushed the bumps larger and more teardrop-shaped, as if
+      water is pooling and running down the surface. At this stage the normal detail alone carries most of the
+      droplet read — each bead catches light on its upper edge and falls into shadow below.
+    </p>
+
+    <figure>
+      <img src="assets/metal-shader/metal-droplets.png" alt="Final metal droplets shader render" />
+      <figcaption>Final render — metallic BSDF with droplet normals</figcaption>
+    </figure>
+
+    <p>
+      The finished shader plugs the normal map into a metallic BSDF with a dark base color and high roughness
+      variation. Specular highlights on each droplet sit against the brushed metal underneath, giving the sense of
+      condensation on a cold steel surface.
+    </p>
+  </article>
+
+</div>
+
+<footer>
+  © 2026 Varsha Danduri · Hosted on <a href="https://pages.github.com">GitHub Pages</a>
+</footer>
+
+</body>
+</html>
