@@ -221,12 +221,13 @@ h2 {
   font-style: italic;
 }
 
-figure {
-  margin: 1.5rem 0 2rem;
+.project-body figure {
+  margin: 1.5rem auto 2rem;
+  max-width: 480px;
 }
 
-figure img,
-figure video {
+.project-body figure img,
+.project-body figure video {
   width: 100%;
   border-radius: 6px;
   border: 1px solid #e4e4e4;
@@ -234,22 +235,24 @@ figure video {
   background: #fff;
 }
 
-figure figcaption {
+.project-body figure figcaption {
   font-size: 0.8rem;
   color: #888;
   margin-top: 0.5rem;
   text-align: center;
 }
 
-.figure-row {
+.project-body .figure-row {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 1rem;
-  margin: 1.5rem 0 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 0.75rem;
+  margin: 1.5rem auto 2rem;
+  max-width: 520px;
 }
 
-.figure-row figure {
+.project-body .figure-row figure {
   margin: 0;
+  max-width: none;
 }
 
 .figure-group-caption {
@@ -258,6 +261,9 @@ figure figcaption {
   color: #888;
   margin-top: -0.5rem;
   margin-bottom: 2rem;
+  max-width: 520px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .project-body a {
