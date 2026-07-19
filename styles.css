@@ -122,6 +122,10 @@ h2 {
   margin-bottom: 1.5rem;
 }
 
+#ml h2 {
+  margin-top: 1rem;
+}
+
 /* PROJECT GRID */
 .projects {
   display: grid;

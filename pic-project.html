@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Image Convolution: Varsha Danduri</title>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<nav>
+  <a class="nav-name" href="index.html">Varsha Danduri</a>
+  <ul class="nav-links">
+    <li><a href="index.html#about">About</a></li>
+    <li><a href="index.html#portfolio" class="active">Portfolio</a></li>
+  </ul>
+</nav>
+
+<div class="container container--narrow">
+
+  <a class="back-link" href="index.html#graphics">← Back to Portfolio</a>
+
+  <header class="project-header">
+    <h1>Image Convolution</h1>
+    <p class="project-tags">C · pthreads · Image Processing</p>
+  </header>
+
+  <article class="project-body">
+    <p>
+      A multithreaded C program that applies 3×3 convolution kernels to images. Given an input file and a filter
+      type, it loads the image with stb_image, convolves each pixel against a kernel matrix, and writes the result
+      as PNG. Six filters are supported: edge, sharpen, blur, Gaussian blur, emboss, and identity.
+    </p>
+
+    <figure>
+      <img src="assets/pic-project/web-pic3.jpg" alt="Original input image" />
+      <figcaption>Original image (pic3)</figcaption>
+    </figure>
+
+    <p>
+      Each output pixel is a weighted sum of its 3×3 neighborhood. Edge pixels clamp to the nearest border value
+      so the kernel never reads out of bounds. The edge-detection kernel highlights intensity changes, which is
+      why high-contrast scenes like this produce strong line work.
+    </p>
+
+    <figure>
+      <img src="assets/pic-project/web-pic3.jpg_edge.png" alt="Edge detection filter applied to pic3" />
+      <figcaption>Edge detection</figcaption>
+    </figure>
+
+    <div class="figure-row">
+      <figure>
+        <img src="assets/pic-project/web-pic3.jpg_blur.png" alt="Blur filter" />
+        <figcaption>Blur</figcaption>
+      </figure>
+      <figure>
+        <img src="assets/pic-project/web-pic3.jpg_sharpen.png" alt="Sharpen filter" />
+        <figcaption>Sharpen</figcaption>
+      </figure>
+      <figure>
+        <img src="assets/pic-project/web-pic3.jpg_emboss.png" alt="Emboss filter" />
+        <figcaption>Emboss</figcaption>
+      </figure>
+    </div>
+
+    <p>
+      Convolution runs in parallel using pthreads, splitting rows across worker threads. The same
+      <code>getPixelValue</code> function drives every filter; only the kernel matrix changes between modes.
+    </p>
+
+<pre><code>Matrix algorithms[] = {
+  {{0,-1,0},{-1,4,-1},{0,-1,0}},           // edge
+  {{0,-1,0},{-1,5,-1},{0,-1,0}},           // sharpen
+  {{1/9.0,1/9.0,1/9.0}, ...},              // blur
+  {{1.0/16,1.0/8,1.0/16}, ...},            // gauss
+  {{-2,-1,0},{-1,1,1},{0,1,2}},            // emboss
+  {{0,0,0},{0,1,0},{0,0,0}}                // identity
+};</code></pre>
+
+    <p>
+      <a href="https://github.com/VarshaDanduri/CISC372_picProject" target="_blank">View on GitHub →</a>
+    </p>
+  </article>
+
+</div>
+
+<footer>
+  © 2026 Varsha Danduri · Hosted on <a href="https://pages.github.com">GitHub Pages</a>
+</footer>
+
+</body>
+</html>

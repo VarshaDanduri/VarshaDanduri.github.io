@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aura: Varsha Danduri</title>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<nav>
+  <a class="nav-name" href="index.html">Varsha Danduri</a>
+  <ul class="nav-links">
+    <li><a href="index.html#about">About</a></li>
+    <li><a href="index.html#portfolio" class="active">Portfolio</a></li>
+  </ul>
+</nav>
+
+<div class="container container--narrow">
+
+  <a class="back-link" href="index.html#ml">← Back to Portfolio</a>
+
+  <header class="project-header">
+    <h1>Aura</h1>
+    <p class="project-tags">Biosignals · Sentence Transformers · k-NN · UMAP · Generative Art</p>
+  </header>
+
+  <article class="project-body">
+    <p>
+      An artist created 500 brushstrokes across five emotional categories (joy, calm, neutral, sad, anger), each
+      paired with a written description tagging its emotional intent. We encode these descriptions using a pretrained
+      sentence-transformer (all-MiniLM-L6-v2), producing 384-dimensional embeddings that preserve the artist's affective
+      intent as a learned representation.
+    </p>
+
+    <figure>
+      <img src="assets/aura/facial-capture.png" alt="Real-time facial biosignal capture with emotion classification" />
+      <figcaption>Real-time biosignal capture mapped to emotional categories</figcaption>
+    </figure>
+
+    <p>
+      A k-nearest-neighbors classifier maps real-time biosignals onto this space, and UMAP projects it into 2D canvas
+      coordinates. Each stroke on the painting is chosen by matching the user's physiological-emotional state to an
+      artist's felt interpretation of that same emotion. The painting is a translation of biosignal data through the
+      artist's emotional vocabulary, not stochastic generation.
+    </p>
+
+    <figure>
+      <img src="assets/aura/paint.png" alt="Painting generated from biosignal-matched brushstrokes" />
+      <figcaption>Output painting built from matched artist brushstrokes</figcaption>
+    </figure>
+  </article>
+
+</div>
+
+<footer>
+  © 2026 Varsha Danduri · Hosted on <a href="https://pages.github.com">GitHub Pages</a>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MIMIC-IV Data Pipeline: Varsha Danduri</title>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<nav>
+  <a class="nav-name" href="index.html">Varsha Danduri</a>
+  <ul class="nav-links">
+    <li><a href="index.html#about">About</a></li>
+    <li><a href="index.html#portfolio" class="active">Portfolio</a></li>
+  </ul>
+</nav>
+
+<div class="container container--narrow">
+
+  <a class="back-link" href="index.html#ml">← Back to Portfolio</a>
+
+  <header class="project-header">
+    <h1>MIMIC-IV Data Pipeline</h1>
+    <p class="project-tags">Healthcare ML · Data Engineering · Python · 300+ GitHub Stars</p>
+  </header>
+
+  <article class="project-body">
+    <p>
+      I helped build the new release of the MIMIC-IV Data Pipeline, an open-source project with over 300 stars used
+      by clinical ML researchers. The pipeline takes raw MIMIC-IV hospital data through cleaning, preprocessing,
+      model training, and evaluation in one place, so researchers can generate and download models trained on
+      consistently preprocessed data without rebuilding the workflow themselves.
+    </p>
+
+    <figure>
+      <img src="assets/mimic-pipeline/updated_framework.png" alt="MIMIC-IV multimodal pipeline framework overview" />
+      <figcaption>End-to-end pipeline overview</figcaption>
+    </figure>
+
+    <h3>Data cleaning and cohort building</h3>
+    <p>
+      The pipeline starts with customizable data extraction from MIMIC-IV. Users select modalities, filter by ICD
+      codes or disease name, remove outliers, impute missing values, and group clinical features using standard
+      coding systems. Each step is configurable and recorded for reproducibility, so a researcher can define a
+      personalized patient cohort and rerun the exact same preprocessing later.
+    </p>
+
+    <figure>
+      <img src="assets/mimic-pipeline/modalities-select.png" alt="Modality selection in the pipeline notebook" />
+      <figcaption>Selecting data modalities in the notebook</figcaption>
+    </figure>
+
+    <h3>Multimodal integration</h3>
+    <p>
+      The new release extends the original pipeline to five modalities: structured EHR data (vitals, labs,
+      medications), clinical notes, waveforms, chest X-rays, and echocardiograms. Previously these lived in
+      separate stores and required manual alignment. The pipeline connects them through a shared preprocessing
+      framework so multimodal cohorts are ready for downstream modeling.
+    </p>
+
+    <figure>
+      <img src="assets/mimic-pipeline/mimic_connect.png" alt="How multimodal MIMIC-IV data is connected" />
+      <figcaption>Connecting structured, text, waveform, and imaging data</figcaption>
+    </figure>
+
+    <h3>Temporal alignment</h3>
+    <p>
+      Sequential clinical data is binned into equal-length time intervals and filtered by time-series length
+      according to user preference. This produces smooth, aligned time-series datasets that sequential models
+      can consume directly.
+    </p>
+
+    <figure>
+      <img src="assets/mimic-pipeline/mimic-temporal.png" alt="Temporal alignment of MIMIC-IV time series" />
+      <figcaption>Temporal alignment across patient records</figcaption>
+    </figure>
+
+    <h3>Automatic model training and evaluation</h3>
+    <p>
+      After preprocessing, the pipeline handles model creation, training, and testing on the selected cohort.
+      It includes commonly used sequential architectures (including BEHRT and BERT-based models), saves checkpoints,
+      and runs standard evaluation with optional fairness reporting. Researchers get preprocessed data and a
+      trained model from the same notebook workflow.
+    </p>
+
+    <figure>
+      <img src="assets/mimic-pipeline/mimic_pipeline.png" alt="Full MIMIC-IV pipeline from data to model" />
+      <figcaption>From raw MIMIC-IV data to trained model</figcaption>
+    </figure>
+
+    <p>
+      The goal is to lower the barrier for other researchers: pick your cohort, preprocess, train, and export.
+      Everything runs through <code>mainPipeline.ipynb</code> as a step-by-step wizard, with standalone modules
+      for evaluation and fairness when you only need those pieces.
+    </p>
+
+    <p>
+      <a href="https://github.com/healthylaife/MIMIC-IV-Data-Pipeline" target="_blank">View on GitHub →</a>
+    </p>
+  </article>
+
+</div>
+
+<footer>
+  © 2026 Varsha Danduri · Hosted on <a href="https://pages.github.com">GitHub Pages</a>
+</footer>
+
+</body>
+</html>

@@ -64,18 +64,73 @@ https://github.com/VarshaDanduri/bouncing-ball
 Multiple balls colliding in parallel
 
 
+# Kitin
+AI security tool using a multi-model approach trained on a history of cybersecurity exploits for accuracy instead of relying on an LLM for analysis.
+
+[add terminal]
+Scanning a file from the command line
+
+[add mobile-app]
+Scan results on mobile
+
+
+# MIMIC-IV Data Pipeline
+Helped build the new release of this 300+ star open-source pipeline. Data cleaning and processing for MIMIC-IV with automatic model training and testing on selected cohorts. Simple workflow for researchers to generate and download models trained on preprocessed data.
+
+https://github.com/healthylaife/MIMIC-IV-Data-Pipeline
+
+[add updated_framework]
+End-to-end pipeline overview
+
+[add modalities-select]
+Selecting data modalities in the notebook
+
+[add mimic_connect]
+Connecting structured, text, waveform, and imaging data
+
+[add mimic-temporal]
+Temporal alignment across patient records
+
+[add mimic_pipeline]
+From raw MIMIC-IV data to trained model
+
+
+# Aura
+An artist created 500 brushstrokes across five emotional categories (joy, calm, neutral, sad, anger), each paired with a written description tagging its emotional intent. Encode descriptions with all-MiniLM-L6-v2 (384-dim embeddings). k-NN maps real-time biosignals onto this space, UMAP projects to 2D canvas coordinates. Each stroke matches the user's physiological-emotional state to the artist's felt interpretation. Translation of biosignal data through the artist's emotional vocabulary, not stochastic generation.
+
+[add facial-capture]
+Real-time biosignal capture mapped to emotional categories
+
+[add paint]
+Output painting built from matched artist brushstrokes
+
+
+# Image Convolution (CISC372)
+Multithreaded C image convolution with 3×3 kernels: edge, sharpen, blur, gauss, emboss, identity. stb_image load/write, pthread row splitting.
+
+https://github.com/VarshaDanduri/CISC372_picProject
+
+[add web-pic3]
+Original image (pic3)
+
+[add web-pic3.jpg_edge]
+Edge detection
+
+[show blur, sharpen, emboss on pic3]
+
+
 # Metal Shader
-A procedural metal material in Blender — water droplets on a weathered steel surface, built layer by layer from noise textures through normal mapping to a metallic BSDF.
+A procedural metal material in Blender, water droplets on a weathered steel surface, built layer by layer from noise textures through normal mapping to a metallic BSDF.
 
 [add rigged-multifractal]
 Musgrave multifractal mapped onto the sphere
 
-I started with a Musgrave texture set to multifractal mode, mapped onto the sphere's surface coordinates. This gave a base layer of organic variation — streaky, irregular bright spots against a dark field that could drive surface detail later.
+I started with a Musgrave texture set to multifractal mode, mapped onto the sphere's surface coordinates. This gave a base layer of organic variation, streaky irregular bright spots against a dark field that could drive surface detail later.
 
 [add original-multifractal]
 Distorted Voronoi defining droplet regions
 
-On top of that I layered a Voronoi texture, distorted with a Mapping node and Vector Math to break up the regular cell pattern. The result is soft, blob-like regions across the surface — the shapes that would become individual water droplets.
+On top of that I layered a Voronoi texture, distorted with a Mapping node and Vector Math to break up the regular cell pattern. The result is soft, blob-like regions across the surface, the shapes that would become individual water droplets.
 
 [add normal-bump]
 First normal map pass
@@ -83,11 +138,11 @@ First normal map pass
 Feeding the combined noise into a Normal Map node gave the first bump pass. The droplets read as small raised spots on the surface, but the scale was too fine and the shapes too uniform.
 
 [add better-bump]
-Tuned Musgrave — larger droplet bumps
+Tuned Musgrave, larger droplet bumps
 
 Adjusting the Musgrave scale and dimension settings pushed the bumps larger and more teardrop-shaped, as if water is pooling and running down the surface.
 
 [add metal-droplets]
-Final render — metallic BSDF with droplet normals
+Final render, metallic BSDF with droplet normals
 
 The finished shader plugs the normal map into a metallic BSDF with a dark base color and high roughness variation. Specular highlights on each droplet sit against the brushed metal underneath.

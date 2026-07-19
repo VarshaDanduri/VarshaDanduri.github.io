@@ -26,8 +26,8 @@
     <div class="about-text">
       <h1>Varsha Danduri</h1>
       <p>
-        Hi! I'm a student passionate about computer graphics, technical art, and animation.
-        I enjoy building characters, shaders, and renderers — from Blender rigs to Unity compute shaders.
+        Hi! I'm a student passionate about computer graphics, technical art, and machine learning.
+        I enjoy building characters, shaders, renderers, and AI tools that solve real problems.
       </p>
       <p>Feel free to explore my portfolio, or connect with me below.</p>
       <div class="social-links">
@@ -38,57 +38,104 @@
     </div>
   </div>
 
-  <!-- PROJECTS -->
+  <!-- PORTFOLIO -->
   <div id="portfolio">
-    <h2>Portfolio</h2>
-    <div class="projects">
 
-      <a class="project-card" href="anika-rig.html">
-        <img class="project-thumb" src="assets/anika-rig/rigged-character.png" alt="Anika Rig" />
-        <div class="project-info">
-          <p class="project-name">Anika Rig</p>
-          <p class="project-subtitle">Free character rig — modelling, texturing, shaders, and rigging</p>
-          <p class="project-tags">Blender, Rigging, Shaders</p>
-        </div>
-      </a>
+    <div id="graphics">
+      <h2>Graphics</h2>
+      <div class="projects">
 
-      <a class="project-card" href="grass-shader.html">
-        <img class="project-thumb" src="assets/grass-shader/grass-image.jpeg" alt="Grass Shader" />
-        <div class="project-info">
-          <p class="project-name">Grass Shader</p>
-          <p class="project-subtitle">GPU-generated grass blades with wind animation, LOD, and an in-editor tuning tool</p>
-          <p class="project-tags">Unity, Compute Shader, HLSL</p>
-        </div>
-      </a>
+        <a class="project-card" href="anika-rig.html">
+          <img class="project-thumb" src="assets/anika-rig/rigged-character.png" alt="Anika Rig" />
+          <div class="project-info">
+            <p class="project-name">Anika Rig</p>
+            <p class="project-subtitle">Free character rig with modelling, texturing, shaders, and rigging</p>
+            <p class="project-tags">Blender, Rigging, Shaders</p>
+          </div>
+        </a>
 
-      <a class="project-card" href="cpu-rasterizer.html">
-        <img class="project-thumb" src="assets/cpu-rasterizer/cubes.png" alt="CPU Rasterizer" />
-        <div class="project-info">
-          <p class="project-name">CPU Rasterizer</p>
-          <p class="project-subtitle">Software renderer built from scratch on the CPU</p>
-          <p class="project-tags">C++, Computer Graphics</p>
-        </div>
-      </a>
+        <a class="project-card" href="grass-shader.html">
+          <img class="project-thumb" src="assets/grass-shader/grass-image.jpeg" alt="Grass Shader" />
+          <div class="project-info">
+            <p class="project-name">Grass Shader</p>
+            <p class="project-subtitle">GPU-generated grass blades with wind animation, LOD, and an in-editor tuning tool</p>
+            <p class="project-tags">Unity, Compute Shader, HLSL</p>
+          </div>
+        </a>
 
-      <a class="project-card" href="metal-shader.html">
-        <img class="project-thumb" src="assets/metal-shader/metal-droplets.png" alt="Metal Shader" />
-        <div class="project-info">
-          <p class="project-name">Metal Shader</p>
-          <p class="project-subtitle">Procedural metal with Musgrave and Voronoi droplets, built up through normal mapping</p>
-          <p class="project-tags">Blender, Shader Nodes</p>
-        </div>
-      </a>
+        <a class="project-card" href="cpu-rasterizer.html">
+          <img class="project-thumb" src="assets/cpu-rasterizer/cubes.png" alt="CPU Rasterizer" />
+          <div class="project-info">
+            <p class="project-name">CPU Rasterizer</p>
+            <p class="project-subtitle">Software renderer built from scratch on the CPU</p>
+            <p class="project-tags">C++, Computer Graphics</p>
+          </div>
+        </a>
 
-      <a class="project-card" href="bouncing-ball.html">
-        <video class="project-thumb" src="assets/bouncing-ball/bouncing-ball-video.mp4" muted loop autoplay playsinline></video>
-        <div class="project-info">
-          <p class="project-name">Bouncing Ball</p>
-          <p class="project-subtitle">GPU-parallel ball physics with texture-based state and instanced rendering</p>
-          <p class="project-tags">OpenGL, GLSL, C++</p>
-        </div>
-      </a>
+        <a class="project-card" href="metal-shader.html">
+          <img class="project-thumb" src="assets/metal-shader/metal-droplets.png" alt="Metal Shader" />
+          <div class="project-info">
+            <p class="project-name">Metal Shader</p>
+            <p class="project-subtitle">Procedural metal with Musgrave and Voronoi droplets, built up through normal mapping</p>
+            <p class="project-tags">Blender, Shader Nodes</p>
+          </div>
+        </a>
 
+        <a class="project-card" href="bouncing-ball.html">
+          <video class="project-thumb" src="assets/bouncing-ball/bouncing-ball-video.mp4" muted loop autoplay playsinline></video>
+          <div class="project-info">
+            <p class="project-name">Bouncing Ball</p>
+            <p class="project-subtitle">GPU-parallel ball physics with texture-based state and instanced rendering</p>
+            <p class="project-tags">OpenGL, GLSL, C++</p>
+          </div>
+        </a>
+
+        <a class="project-card" href="pic-project.html">
+          <img class="project-thumb" src="assets/pic-project/web-pic3.jpg_edge.png" alt="Image Convolution" />
+          <div class="project-info">
+            <p class="project-name">Image Convolution</p>
+            <p class="project-subtitle">Multithreaded 3×3 kernel filters in C: edge, blur, sharpen, emboss, and more</p>
+            <p class="project-tags">C, pthreads, Image Processing</p>
+          </div>
+        </a>
+
+      </div>
     </div>
+
+    <div id="ml">
+      <h2>ML</h2>
+      <div class="projects">
+
+        <a class="project-card" href="kitin.html">
+          <img class="project-thumb" src="assets/kitin/terminal.png" alt="Kitin" />
+          <div class="project-info">
+            <p class="project-name">Kitin</p>
+            <p class="project-subtitle">AI security with multi-model exploit detection, built for accuracy over LLM guessing</p>
+            <p class="project-tags">AI Security, Multi-Model, Go</p>
+          </div>
+        </a>
+
+        <a class="project-card" href="mimic-pipeline.html">
+          <img class="project-thumb" src="assets/mimic-pipeline/updated_framework.png" alt="MIMIC-IV Data Pipeline" />
+          <div class="project-info">
+            <p class="project-name">MIMIC-IV Data Pipeline</p>
+            <p class="project-subtitle">Multimodal data cleaning, preprocessing, and automatic model training for clinical researchers</p>
+            <p class="project-tags">Python, Healthcare ML, Data Pipeline</p>
+          </div>
+        </a>
+
+        <a class="project-card" href="aura.html">
+          <img class="project-thumb" src="assets/aura/paint.png" alt="Aura" />
+          <div class="project-info">
+            <p class="project-name">Aura</p>
+            <p class="project-subtitle">Biosignal-driven painting through an artist's emotional brushstroke vocabulary</p>
+            <p class="project-tags">Biosignals, Sentence Transformers, UMAP</p>
+          </div>
+        </a>
+
+      </div>
+    </div>
+
   </div>
 
 </div>

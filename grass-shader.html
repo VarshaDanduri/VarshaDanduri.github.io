@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Grass Shader — Varsha Danduri</title>
+  <title>Grass Shader: Varsha Danduri</title>
   <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
 </head>
@@ -19,7 +19,7 @@
 
 <div class="container container--narrow">
 
-  <a class="back-link" href="index.html#portfolio">← Back to Portfolio</a>
+  <a class="back-link" href="index.html#graphics">← Back to Portfolio</a>
 
   <header class="project-header">
     <h1>Grass Shader</h1>
@@ -28,7 +28,7 @@
 
   <article class="project-body">
     <p>
-      A Unity URP grass system that generates all blade geometry on the GPU in parallel using a compute shader —
+      A Unity URP grass system that generates all blade geometry on the GPU in parallel using a compute shader  
       one thread per source triangle, output streamed to an append buffer, drawn in a single indirect draw call.
     </p>
 
@@ -85,7 +85,7 @@ for (i = 0; i &lt; numTriangles; i++) {
 float3 offsetWS = mul(tsToWs, offsetTS);
 float3 positionWS = anchorWS + offsetWS;</code></pre>
 
-    <h3>Rotating the blade — bend, twist, and wind</h3>
+    <h3>Rotating the blade: bend, twist, and wind</h3>
     <p>
       Rotation is applied in order: bend, twist, convert to world space, then wind. Bend increases toward the tip using
       <code>pow(v, _BladeCurvature)</code>. A random twist around the blade axis gives each blade a unique facing
@@ -99,13 +99,13 @@ return mul(windMatrix, mul(tsToWs, mul(twistMatrix, bendMatrix)));</code></pre>
 
     <figure>
       <video src="assets/grass-shader/perlin-noise.mp4" controls playsinline></video>
-      <figcaption>Wind moving through the field — each blade rotates by a different amount</figcaption>
+      <figcaption>Wind moving through the field: each blade rotates by a different amount</figcaption>
     </figure>
 
     <h3>Procedural wind noise</h3>
     <p>
-      Wind strength is sampled per blade in world space. The compute shader uses a cheap gradient noise function —
-      hash values at grid corners blended with a quintic curve for smooth interpolation — then scrolls the sample
+      Wind strength is sampled per blade in world space. The compute shader uses a cheap gradient noise function:
+      hash values at grid corners blended with a quintic curve for smooth interpolation, then scrolls the sample
       position over time along a wind direction.
     </p>
 
@@ -134,7 +134,7 @@ float GetWindStrength(float3 positionWS) {
   return normalize(cross(float3(0, 1, 0), windDir3D));
 }</code></pre>
 
-    <h3>Fragment shading — light, shadow tint, and wind darkening</h3>
+    <h3>Fragment shading: light, shadow tint, and wind darkening</h3>
     <p>
       The graphics shader reads each generated triangle from a structured buffer. The fragment shader lerps from base
       color to tip color by height, then darkens albedo where wind strength is high. Directional light and shadow
@@ -154,11 +154,11 @@ float3 shadowedColor = lerp(albedo, _ShadowColor.rgb, _ShadowTintStrength);
 float3 finalColor = lerp(shadowedColor, litColor, lightAmount);</code></pre>
 
     <p>
-      The wind darkening on albedo simulates self-shadowing as blades lean — a bright tip tilting away reads slightly
+      The wind darkening on albedo simulates self-shadowing as blades lean: a bright tip tilting away reads slightly
       darker before the main light calculation even runs.
     </p>
 
-    <h3>C# renderer — feeding the compute shader and drawing</h3>
+    <h3>C# renderer: feeding the compute shader and drawing</h3>
     <p>
       <code>ProceduralGrassRenderer</code> uploads the source mesh into compute buffers, passes all grass and wind
       settings each frame, dispatches one thread group per source triangle, then draws the append buffer with
@@ -180,10 +180,10 @@ Graphics.DrawProceduralIndirect(instantiatedMaterial, bounds, MeshTopology.Trian
       <figcaption>Adjusting grass and wind settings in the Unity inspector</figcaption>
     </figure>
 
-    <h3>Custom Unity editor — grass settings and wind texture generator</h3>
+    <h3>Custom Unity editor: grass settings and wind texture generator</h3>
     <p>
       <code>ProceduralGrassRendererEditor</code> extends the default inspector for the renderer. All grass settings
-      — segment count, blade width/height, curvature, bend, wind amplitude, and LOD distances — appear as standard
+     : segment count, blade width/height, curvature, bend, wind amplitude, and LOD distances: appear as standard
       Unity fields through <code>DrawDefaultInspector()</code>. Below that, a custom panel generates a tileable
       Perlin noise texture for wind.
     </p>

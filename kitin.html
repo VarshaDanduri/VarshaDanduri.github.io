@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kitin: Varsha Danduri</title>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<nav>
+  <a class="nav-name" href="index.html">Varsha Danduri</a>
+  <ul class="nav-links">
+    <li><a href="index.html#about">About</a></li>
+    <li><a href="index.html#portfolio" class="active">Portfolio</a></li>
+  </ul>
+</nav>
+
+<div class="container container--narrow">
+
+  <a class="back-link" href="index.html#ml">← Back to Portfolio</a>
+
+  <header class="project-header">
+    <h1>Kitin</h1>
+    <p class="project-tags">AI Security · Multi-Model · Cybersecurity</p>
+  </header>
+
+  <article class="project-body">
+    <p>
+      Kitin is an AI security tool that takes a different approach to code analysis. Instead of sending your
+      codebase to a general-purpose LLM and hoping for accurate results, Kitin uses a multi-model system trained on
+      a history of real cybersecurity exploits. That training gives it higher accuracy on the vulnerability patterns
+      that actually show up in production code.
+    </p>
+
+    <figure>
+      <img src="assets/kitin/terminal.png" alt="Kitin terminal scan output" />
+      <figcaption>Scanning a file from the command line</figcaption>
+    </figure>
+
+    <p>
+      From the terminal, you point Kitin at a file or directory and it returns structured findings: severity level,
+      category, the exact line, a plain-language explanation, and a suggested fix. Results also include an estimated
+      daily exposure cost and a breakdown by severity so you can prioritize what to patch first.
+    </p>
+
+    <p>
+      In the example above, Kitin flags hardcoded credentials, sensitive data logged to the console, SQL injection,
+      missing rate limiting on authentication endpoints, and missing Content-Security-Policy headers. Each finding
+      is tagged by type (injection, auth &amp; sessions, data exposure, hardening) rather than returned as free-form
+      LLM text.
+    </p>
+
+    <figure>
+      <img src="assets/kitin/mobile-app.png" alt="Kitin mobile scan results" />
+      <figcaption>Scan results on mobile</figcaption>
+    </figure>
+
+    <p>
+      The same scan data is available through a mobile interface. The priority list surfaces high-severity issues
+      first, with issue count, daily exposure estimate, and per-finding detail on tap. The goal is to make security
+      review feel actionable: know what is wrong, how risky it is, and how to fix it, without wading through an
+      unstructured model response.
+    </p>
+  </article>
+
+</div>
+
+<footer>
+  © 2026 Varsha Danduri · Hosted on <a href="https://pages.github.com">GitHub Pages</a>
+</footer>
+
+</body>
+</html>
