@@ -71,6 +71,14 @@ nav {
   padding-top: 2rem;
 }
 
+.about-photo {
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
 .about-placeholder {
   width: 130px;
   height: 130px;
@@ -156,6 +164,11 @@ h2 {
   display: block;
 }
 
+.project-thumb-contain {
+  object-fit: contain;
+  background: #eee;
+}
+
 .project-thumb-placeholder {
   width: 100%;
   aspect-ratio: 16/9;
@@ -225,9 +238,19 @@ h2 {
   font-style: italic;
 }
 
+.project-body figure.contain img {
+  object-fit: contain;
+  width: 100%;
+  height: auto;
+}
+
 .project-body figure {
   margin: 1.5rem auto 2rem;
   max-width: 480px;
+}
+
+.project-body figure.contain {
+  max-width: 640px;
 }
 
 .project-body figure img,

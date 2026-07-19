@@ -55,7 +55,7 @@ GLuint tex[2];
 tex[0] = makeStateTexture(NUM_BALLS, ballData.data());
 tex[1] = makeStateTexture(NUM_BALLS, nullptr);</code></pre>
 
-    <h3>Physics pass: one fragment per ball</h3>
+    <h3>Physics pass, one fragment per ball</h3>
     <p>
       A fullscreen quad is drawn to an offscreen framebuffer sized <code>NUM_BALLS × 1</code>. Each fragment looks up
       its own ball with <code>gl_FragCoord.x</code>, reads state from the input texture, resolves collisions against
@@ -67,10 +67,10 @@ vec4 self = texelFetch(uState, ivec2(i, 0), 0);
 vec2 pos = self.xy;
 vec2 vel = self.zw;</code></pre>
 
-    <h3>Ball-to-ball collision: conservation of momentum</h3>
+    <h3>Ball-to-ball collision and conservation of momentum</h3>
     <p>
       For each pair of overlapping balls, the shader computes the collision normal and checks whether they are moving
-      toward each other. If so, velocity is projected along the normal and reflected: the impulse that conserves
+      toward each other. If so, velocity is projected along the normal and reflected. That impulse conserves
       momentum for equal-mass spheres colliding elastically along the contact normal.
     </p>
 
@@ -86,7 +86,7 @@ if (dist &lt; minDist && dist > 0.0001) {
 
     <p>
       Because each ball's fragment runs independently and writes only its own output, ball <code>j</code> applies the
-      same logic when it processes ball <code>i</code>: both velocities update in parallel without a serial loop on the CPU.
+      same logic when it processes ball <code>i</code>. Both velocities update in parallel without a serial loop on the CPU.
     </p>
 
     <h3>Wall bounce and integration</h3>
@@ -105,7 +105,7 @@ pos += vel * uDelta;
 newState = vec4(pos, vel);</code></pre>
 
     <p>
-      C++ drives the ping-pong each frame: bind the write FBO, run the physics program, swap textures, then render.
+      C++ drives the ping-pong each frame. It binds the write FBO, runs the physics program, swaps textures, then renders.
     </p>
 
 <pre><code>glBindFramebuffer(GL_FRAMEBUFFER, fbo[1 - current]);
@@ -115,7 +115,7 @@ glBindTexture(GL_TEXTURE_2D, tex[current]);
 glDrawArrays(GL_TRIANGLES, 0, 6);
 current = 1 - current;</code></pre>
 
-    <h3>Render pass: instanced draw for all balls</h3>
+    <h3>Render pass with instanced draw for all balls</h3>
     <p>
       A separate render shader draws every ball in one instanced call. <code>gl_InstanceID</code> selects which texel
       to read; the unit quad is scaled by radius and offset to the ball's position. The fragment shader discards
@@ -127,7 +127,7 @@ vec4 state = texelFetch(uState, ivec2(gl_InstanceID, 0), 0);
 vec2 worldPos = state.xy + aQuadPos * uRadius;
 gl_Position = vec4(worldPos, 0.0, 1.0);
 
-// main.cpp: one draw call for every ball
+// main.cpp, one draw call for every ball
 glDrawArraysInstanced(GL_TRIANGLES, 0, 6, NUM_BALLS);</code></pre>
 
 <pre><code>// render.frag.glsl

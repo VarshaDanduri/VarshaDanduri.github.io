@@ -28,7 +28,7 @@
 
   <article class="project-body">
     <p>
-      A Unity URP grass system that generates all blade geometry on the GPU in parallel using a compute shader  
+      A Unity URP grass system that generates all blade geometry on the GPU in parallel using a compute shader,
       one thread per source triangle, output streamed to an append buffer, drawn in a single indirect draw call.
     </p>
 
@@ -46,172 +46,44 @@
 
     <h3>Building sections from a single strip of triangles</h3>
     <p>
-      A blade is not one triangle, it is a strip of square sections stacked along the height of the blade. For each
+      A blade is not one triangle. It is a strip of square sections stacked along the height of the blade. For each
       segment, the compute shader places two vertices at the same height <code>v</code>, then adds a final tip vertex.
-      Adjacent groups of three vertices become the draw triangles appended to the buffer.
-    </p>
-    <p>
-      As <code>v</code> rises toward the tip, the horizontal offset <code>u</code> converges on 0.5, tapering the blade.
-      Segment count is reduced at distance via LOD so far blades use fewer sections.
+      Adjacent groups of three vertices become the draw triangles appended to the buffer. As <code>v</code> rises toward
+      the tip, the horizontal offset <code>u</code> converges on 0.5, tapering the blade. Segment count is reduced at
+      distance via LOD so far blades use fewer sections.
     </p>
 
-<pre><code>for (int i = 0; i &lt; numBladeSegments; i++) {
-  float v = i / (float)numBladeSegments;
-  float u = 0.5 - (1 - v) * 0.5;
-  float3x3 transform = FigureTransformationForHeight(v, twistMatrix, tsToWs, maxBend, windAxis, windStrength);
+    <figure>
+      <img src="assets/grass-shader/segmants.png" alt="Diagram showing how grass blade segments form triangles" />
+      <figcaption>How blade segments stack and form draw triangles</figcaption>
+    </figure>
 
-  vertices[i * 2]     = SetupBladePoint(positionWS, dimensions, transform, float2(u, v), windStrength);
-  vertices[i * 2 + 1] = SetupBladePoint(positionWS, dimensions, transform, float2(1 - u, v), windStrength);
-}
-
-float3x3 tipTransform = FigureTransformationForHeight(1, twistMatrix, tsToWs, maxBend, windAxis, windStrength);
-vertices[numBladeSegments * 2] = SetupBladePoint(positionWS, dimensions, tipTransform, float2(0.5, 1), windStrength);
-
-int numTriangles = (numBladeSegments - 1) * 2 + 1;
-for (i = 0; i &lt; numTriangles; i++) {
-  DrawTriangle tri = (DrawTriangle)0;
-  tri.vertices[0] = vertices[i];
-  tri.vertices[1] = vertices[i + 1];
-  tri.vertices[2] = vertices[i + 2];
-  _DrawTriangles.Append(tri);
-}</code></pre>
-
-    <p>
-      Each vertex offset starts in tangent space as a width/height pair, then is rotated into world space and added
-      to the anchor point on the terrain triangle.
-    </p>
-
-<pre><code>float3 offsetTS = float3((uv.x - 0.5f) * dimensions.x, 0, uv.y * dimensions.y);
-float3 offsetWS = mul(tsToWs, offsetTS);
-float3 positionWS = anchorWS + offsetWS;</code></pre>
-
-    <h3>Rotating the blade: bend, twist, and wind</h3>
+    <h3>Bend, twist, and wind</h3>
     <p>
       Rotation is applied in order: bend, twist, convert to world space, then wind. Bend increases toward the tip using
-      <code>pow(v, _BladeCurvature)</code>. A random twist around the blade axis gives each blade a unique facing
-      direction. Wind rotation uses the same height multiplier <code>v</code>, so the base stays anchored and the tip
-      moves the most.
+      <code>pow(v, _BladeCurvature)</code>. Wind rotation uses the same height multiplier <code>v</code>, so the base
+      stays anchored and the tip moves the most. Wind strength comes from procedural gradient noise sampled in world
+      space and scrolled over time.
     </p>
-
-<pre><code>float3x3 bendMatrix = AngleAxis3x3(maxBend * pow(v, _BladeCurvature), float3(1, 0, 0));
-float3x3 windMatrix = AngleAxis3x3(_WindAmplitude * v * windStrength, windAxis);
-return mul(windMatrix, mul(tsToWs, mul(twistMatrix, bendMatrix)));</code></pre>
 
     <figure>
       <video src="assets/grass-shader/perlin-noise.mp4" controls playsinline></video>
-      <figcaption>Wind moving through the field: each blade rotates by a different amount</figcaption>
+      <figcaption>Wind moving through the field</figcaption>
     </figure>
 
-    <h3>Procedural wind noise</h3>
+    <h3>Shading and the Unity editor</h3>
     <p>
-      Wind strength is sampled per blade in world space. The compute shader uses a cheap gradient noise function:
-      hash values at grid corners blended with a quintic curve for smooth interpolation, then scrolls the sample
-      position over time along a wind direction.
+      The fragment shader lerps from base color to tip color by height, darkens albedo where wind strength is high,
+      and blends lit and shadowed areas using directional light and a custom shadow tint. On the C# side,
+      <code>ProceduralGrassRenderer</code> uploads mesh data, dispatches the compute shader each frame, and draws
+      with <code>Graphics.DrawProceduralIndirect</code>. A custom editor exposes grass and wind settings and can
+      generate a tileable Perlin noise texture for wind.
     </p>
-
-<pre><code>float gradientNoise(float2 p) {
-  float2 i = floor(p);
-  float2 f = frac(p);
-  float2 u = f * f * f * (f * (f * 6.0 - 15.0) + 10.0);
-  // ... hash corners, lerp ...
-}
-
-float GetWindStrength(float3 positionWS) {
-  float2 windDir = normalize(float2(1, 0.3));
-  float2 windUV = (positionWS.xz * _WindPosMult) * 0.2;
-  windUV -= windDir * _Time.y * _WindTimeMult;
-  return gradientNoise(windUV);
-}</code></pre>
-
-    <p>
-      That noise value becomes <code>windStrength</code> on each vertex. It is multiplied by <code>_WindAmplitude</code>
-      and height <code>v</code> inside <code>FigureTransformationForHeight</code>, controlling how far the blade
-      rotates around the wind axis. The wind axis itself is perpendicular to the global wind direction.
-    </p>
-
-<pre><code>float3 GetWindAxis(float3 positionWS, float3 normalWS) {
-  float3 windDir3D = float3(1, 0, 0.3);
-  return normalize(cross(float3(0, 1, 0), windDir3D));
-}</code></pre>
-
-    <h3>Fragment shading: light, shadow tint, and wind darkening</h3>
-    <p>
-      The graphics shader reads each generated triangle from a structured buffer. The fragment shader lerps from base
-      color to tip color by height, then darkens albedo where wind strength is high. Directional light and shadow
-      maps set how lit each pixel is; the base of each blade is darkened further. Shadowed areas blend toward a
-      separate shadow tint color.
-    </p>
-
-<pre><code>float3 albedo = lerp(_BaseColor.rgb, _TipColor.rgb, input.uv);
-albedo *= lerp(1.0, 0.5, input.windStrength * 0.5);
-
-float NdotL = saturate(dot(normalWS, mainLight.direction));
-float lightAmount = NdotL * mainLight.shadowAttenuation;
-lightAmount *= input.uv;
-
-float3 litColor = albedo * mainLight.color.rgb;
-float3 shadowedColor = lerp(albedo, _ShadowColor.rgb, _ShadowTintStrength);
-float3 finalColor = lerp(shadowedColor, litColor, lightAmount);</code></pre>
-
-    <p>
-      The wind darkening on albedo simulates self-shadowing as blades lean: a bright tip tilting away reads slightly
-      darker before the main light calculation even runs.
-    </p>
-
-    <h3>C# renderer: feeding the compute shader and drawing</h3>
-    <p>
-      <code>ProceduralGrassRenderer</code> uploads the source mesh into compute buffers, passes all grass and wind
-      settings each frame, dispatches one thread group per source triangle, then draws the append buffer with
-      <code>Graphics.DrawProceduralIndirect</code>.
-    </p>
-
-<pre><code>instantiatedGrassComputeShader.SetFloat("_WindAmplitude", grassSettings.windAmplitude);
-instantiatedGrassComputeShader.SetFloat("_WindTimeMult", grassSettings.windPeriod);
-instantiatedGrassComputeShader.SetFloat("_WindPosMult", grassSettings.windScale);
-instantiatedGrassComputeShader.SetTexture(idGrassKernel, "_WindNoiseTexture", grassSettings.windNoiseTexture);
-
-drawBuffer.SetCounterValue(0);
-instantiatedGrassComputeShader.Dispatch(idGrassKernel, dispatchSize, 1, 1);
-Graphics.DrawProceduralIndirect(instantiatedMaterial, bounds, MeshTopology.Triangles, argsBuffer, 0,
-    null, null, ShadowCastingMode.Off, true, gameObject.layer);</code></pre>
 
     <figure>
       <video src="assets/grass-shader/tool-use.mp4" controls playsinline></video>
       <figcaption>Adjusting grass and wind settings in the Unity inspector</figcaption>
     </figure>
-
-    <h3>Custom Unity editor: grass settings and wind texture generator</h3>
-    <p>
-      <code>ProceduralGrassRendererEditor</code> extends the default inspector for the renderer. All grass settings
-     : segment count, blade width/height, curvature, bend, wind amplitude, and LOD distances: appear as standard
-      Unity fields through <code>DrawDefaultInspector()</code>. Below that, a custom panel generates a tileable
-      Perlin noise texture for wind.
-    </p>
-
-<pre><code>[CustomEditor(typeof(ProceduralGrassRenderer))]
-public class ProceduralGrassRendererEditor : Editor {
-  public override void OnInspectorGUI() {
-    DrawDefaultInspector();
-    noiseScale = EditorGUILayout.Slider("Noise Scale", noiseScale, 1f, 32f);
-    noiseSeed = EditorGUILayout.IntField("Seed", noiseSeed);
-    if (GUILayout.Button("Generate Wind Noise Texture")) {
-      GenerateAndAssignNoiseTexture();
-    }
-  }
-}</code></pre>
-
-    <p>
-      The generator fills a 512×512 texture with two independent tileable Perlin noise channels (R and G) using
-      <code>Mathf.PerlinNoise</code>, saves it as <code>WindNoise.png</code>, and assigns it to
-      <code>grassSettings.windNoiseTexture</code> on the renderer.
-    </p>
-
-<pre><code>float r = TileablePerlin(u, v, noiseScale, offsetX, offsetY);
-float g = TileablePerlin(u, v, noiseScale, offsetX2, offsetY2);
-pixels[y * TEXTURE_SIZE + x] = new Color(r, g, 0f, 1f);
-
-SerializedProperty prop = so.FindProperty("grassSettings.windNoiseTexture");
-prop.objectReferenceValue = loadedTexture;</code></pre>
 
     <p>
       <a href="https://github.com/VarshaDanduri/procedural-grass-unity/tree/main/Shader" target="_blank">View source on GitHub →</a>

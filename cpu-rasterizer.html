@@ -28,19 +28,147 @@
 
   <article class="project-body">
     <p>
-      A software rasterizer built from scratch on the CPU. Starting from a hello triangle, the renderer grew to support
-      3D geometry, depth buffering, and shaded meshes: all without relying on a GPU graphics pipeline.
+      A software rasterizer built from scratch on the CPU, following Tayfun Kayhan's
+      <a href="https://tayfunkayhan.wordpress.com/2018/11/24/rasterization-in-one-weekend/" target="_blank">Rasterization in One Weekend</a>
+      series. The repo grows in three stages: a flat triangle, shaded cubes in perspective, then a textured Sponza
+      atrium loaded from disk. Each stage reuses the same edge-function core; later stages add depth testing,
+      backface culling, and perspective-correct attribute interpolation. No GPU involved.
+    </p>
+
+    <h3>Part I: Hello triangle</h3>
+    <p>
+      The first milestone rasterizes a single triangle in 2D. Vertices start in normalized device coordinates (NDC),
+      then a <code>TO_RASTER</code> macro maps them into pixel space so every test happens in the same coordinate
+      system:
+    </p>
+
+<pre><code>#define TO_RASTER(v) glm::vec3(
+  (g_scWidth  * (v.x + 1.0f) / 2),
+  (g_scHeight * (v.y + 1.0f) / 2),
+  1.0f)</code></pre>
+
+    <p>
+      To decide whether a pixel center falls inside the triangle, the rasterizer uses edge functions. Each edge defines
+      a half-space; if a sample is on the same side of all three edges, it is inside. Barycentric coordinates are
+      the weights that blend the three vertex colors. They are a linear combination of the three vertices that sums
+      to 1: a point closer to vertex 0 gets a larger alpha, closer to vertex 1 gets a larger beta, and so on.
+    </p>
+    <p>
+      The code builds a vertex matrix <code>M</code> from the three raster-space positions, inverts it, and reads off
+      the edge vectors. At each pixel, alpha, beta, and gamma are dot products of those edges with the sample point;
+      when all three are non-negative, the pixel is shaded by blending red, green, and blue.
     </p>
 
     <figure>
       <img src="assets/cpu-rasterizer/hello-triangle.png" alt="Hello triangle rendered by the CPU rasterizer" />
-      <figcaption>Hello triangle: first milestone</figcaption>
+      <figcaption>Hello triangle with barycentric color interpolation</figcaption>
     </figure>
+
+<pre><code>float alpha = glm::dot(E0, sample);
+float beta  = glm::dot(E1, sample);
+float gamma = glm::dot(E2, sample);
+
+if ((alpha >= 0.0f) && (beta >= 0.0f) && (gamma >= 0.0f)) {
+  frameBuffer[x + y * g_scWidth] = glm::vec3(c0 * alpha + c1 * beta + c2 * gamma);
+}</code></pre>
+
+    <h3>Part II: Shaded cubes</h3>
+    <p>
+      The second stage moves into 3D. A cube is stored as a small set of unique vertices plus an index buffer, because
+      adjacent triangles share corners and repeating every position would waste memory. Each cube instance gets its own
+      model matrix; a shared view and projection matrix place the camera above the scene looking down.
+    </p>
+    <p>
+      A minimal vertex shader transforms object-space positions to clip space with <code>P * V * M</code>. Before
+      homogeneous division, vertices map to raster space using the w component so perspective is preserved:
+    </p>
+
+<pre><code>#define TO_RASTER(v) glm::vec4(
+  (g_scWidth  * (v.x + v.w) / 2),
+  (g_scHeight * (v.w - v.y) / 2),
+  v.z, v.w)</code></pre>
+
+    <p>
+      The vertex matrix now includes each corner's w value in the third row. Its determinant tells you whether a
+      triangle faces the camera: if <code>det(M) &gt;= 0</code>, the triangle is back-facing and is skipped. This is
+      backface culling without a separate normal pass.
+    </p>
+    <p>
+      A depth buffer resolves overlap between cubes. Instead of storing raw z, the rasterizer interpolates
+      <code>1/w</code> across the triangle (perspective-correct depth) and keeps the fragment with the largest value,
+      so nearer surfaces win. Shared edges between adjacent triangles use tie-breaking rules in
+      <code>EvaluateEdgeFunction</code> so the same pixel is not shaded twice.
+    </p>
 
     <figure>
       <img src="assets/cpu-rasterizer/cubes.png" alt="Shaded cubes rendered by the CPU rasterizer" />
-      <figcaption>Shaded 3D cubes</figcaption>
+      <figcaption>Four indexed cubes with depth testing and backface culling</figcaption>
     </figure>
+
+<pre><code>float oneOverW = (C.x * sample.x) + (C.y * sample.y) + C.z;
+
+if (oneOverW >= depthBuffer[x + y * g_scWidth]) {
+  depthBuffer[x + y * g_scWidth] = oneOverW;
+  frameBuffer[x + y * g_scWidth] = colors[indices[3 * idx] % 6];
+}</code></pre>
+
+    <h3>Part III: Textured Sponza</h3>
+    <p>
+      The final stage loads a real mesh. <code>tinyobjloader</code> parses the OBJ and MTL files; <code>stb_image</code>
+      loads each material's diffuse texture. Because OBJ indices can refer to the same position with different UV or
+      normal indices, the loader builds an <code>IndexedPrimitive</code> key for each unique (position, normal, UV)
+      triple and deduplicates vertices before filling a global index buffer.
+    </p>
+    <p>
+      Rendering splits into a vertex shader and fragment shader, mirroring a GPU pipeline. The VS applies the MVP
+      transform and passes normals and texture coordinates through to the FS. The FS samples the diffuse map with
+      repeat wrapping on fractional UV coordinates.
+    </p>
+
+<pre><code>glm::vec4 VS(const VertexInput& input, const glm::mat4& MVP, FragmentInput& output) {
+  output.Normal    = input.Normal;
+  output.TexCoords = input.TexCoords;
+  return (MVP * glm::vec4(input.Pos, 1.0f));
+}</code></pre>
+
+    <p>
+      Flat UV interpolation would smear textures on large triangles in perspective. The fix is to interpolate
+      <code>u/w</code> and <code>v/w</code> at each vertex, then divide by the interpolated <code>1/w</code> at the
+      fragment. The same edge-function machinery also interpolates z for the depth test and normals if you switch the
+      FS to visualize them.
+    </p>
+
+<pre><code>float uOverW = (PUVS.x * sample.x) + (PUVS.y * sample.y) + PUVS.z;
+float vOverW = (PUVT.x * sample.x) + (PUVT.y * sample.y) + PUVT.z;
+glm::vec2 texCoords = glm::vec2(uOverW, vOverW) / perspDenom;</code></pre>
+
+    <p>
+      Sponza exports vary widely in scale depending on the source file. Hardcoded eye and look-at values that work for
+      one version produce a black frame or a close-up of a wall on another. The renderer walks all loaded vertices once
+      to compute an axis-aligned bounding box, then derives camera position, look target, and near/far planes from the
+      box center, size, and diagonal. It picks the longer horizontal axis so the view looks down the length of the
+      atrium rather than into a side wall.
+    </p>
+
+    <figure class="contain">
+      <img src="assets/cpu-rasterizer/sponza.png" alt="Textured Sponza atrium rendered on the CPU" />
+      <figcaption>Sponza with perspective-correct texture mapping</figcaption>
+    </figure>
+
+    <p>
+      One practical note from the code: if Sponza renders completely black, the first thing to check is winding order.
+      Some OBJ exports use the opposite face orientation, which makes the backface test cull every triangle. Flipping
+      the <code>det(M)</code> comparison confirms whether that is the issue.
+    </p>
+
+    <p>
+      Output at every stage is a PPM image written straight from the frame buffer. Switch between the three demos in
+      <code>main.cpp</code> by uncommenting <code>HelloTriangle</code>, <code>Cube</code>, or <code>GoWild</code>.
+    </p>
+
+    <p>
+      <a href="https://github.com/VarshaDanduri/cpu-rasterizer" target="_blank">View source on GitHub →</a>
+    </p>
   </article>
 
 </div>

@@ -39,7 +39,7 @@ And with that Anika model is complete, both a learning expeirence for me, as wel
 
 
 # Grass Shader
-A Unity URP grass system — one compute thread per source triangle, append buffer, single indirect draw.
+A Unity URP grass system, one compute thread per source triangle, append buffer, single indirect draw.
 
 https://github.com/VarshaDanduri/procedural-grass-unity/tree/main/Shader
 
@@ -47,6 +47,9 @@ Explain: blade sections built as stacked square segments → triangles from adja
 
 [add grass-image]
 Procedural grass in scene
+
+[add segmants]
+How blade segments stack and form draw triangles
 
 [add perlin-noise]
 Wind moving through the field
@@ -106,7 +109,7 @@ Output painting built from matched artist brushstrokes
 
 
 # Image Convolution (CISC372)
-Multithreaded C image convolution with 3×3 kernels: edge, sharpen, blur, gauss, emboss, identity. stb_image load/write, pthread row splitting.
+Multithreaded C image convolution with 3×3 kernels (edge, sharpen, blur, gauss, emboss, identity). stb_image load/write, pthread row splitting.
 
 https://github.com/VarshaDanduri/CISC372_picProject
 
