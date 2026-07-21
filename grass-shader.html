@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Grass Tuning Tool: Varsha Danduri</title>
+  <title>Custom Grass Shader Tool: Varsha Danduri</title>
   <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
 </head>
@@ -22,7 +22,7 @@
   <a class="back-link" href="index.html#pipeline-tools">← Back to Portfolio</a>
 
   <header class="project-header">
-    <h1>Grass Tuning Tool</h1>
+    <h1>Custom Grass Shader Tool</h1>
     <p class="project-tags">Unity · C# · Artist Tools · HLSL</p>
   </header>
 
@@ -36,14 +36,14 @@
 
     <h3>Solution</h3>
     <p>
-      I built an in editor tuning tool with an artist facing inspector UI. Exposed parameters map directly to the
-      grass and wind settings on <code>ProceduralGrassRenderer</code>, so artists can iterate in play mode without
-      touching code. The tool can also generate a tileable Perlin noise texture for wind sampling.
+      I built a tool for customizing a procedural grass shader: an in-editor inspector UI with exposed parameters that
+      map directly to grass and wind settings on <code>ProceduralGrassRenderer</code>. Artists can iterate in play mode
+      without touching code. The tool can also generate a tileable Perlin noise texture for wind sampling.
     </p>
 
     <figure>
       <video src="assets/grass-shader/tool-use.mp4" controls playsinline></video>
-      <figcaption>Adjusting grass and wind settings in the Unity inspector</figcaption>
+      <figcaption>Customizing grass and wind settings in the Unity inspector</figcaption>
     </figure>
 
     <p>
@@ -60,7 +60,7 @@
     <h3>Compute shader details</h3>
     <p>
       Each thread handles one triangle from the source mesh, finds the triangle center in world space, builds a
-      tangent to world matrix, and sprouts a blade from that point. Blade width and height are randomized per position.
+      tangent-to-world matrix, and sprouts a blade from that point. Blade width and height are randomized per position.
       A blade is a strip of square sections stacked along height, with segment count reduced at distance via LOD.
     </p>
 
@@ -81,7 +81,7 @@
 
     <h3>Outcome</h3>
     <p>
-      Artists can tune the full grass field from the inspector and see results immediately. Shader complexity stays
+      Artists can customize the full grass field from the inspector and see results immediately. Shader complexity stays
       encapsulated behind exposed parameters and sensible defaults.
     </p>
     <!-- TODO: add iteration time or team usage outcome if available -->

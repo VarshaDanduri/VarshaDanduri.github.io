@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Metal Shader: Varsha Danduri</title>
+  <title>Editable Blender Shader Extension: Varsha Danduri</title>
   <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
 </head>
@@ -19,25 +19,33 @@
 
 <div class="container container--narrow">
 
-  <a class="back-link" href="index.html#graphics">← Back to Portfolio</a>
+  <a class="back-link" href="index.html#pipeline-tools">← Back to Portfolio</a>
 
   <header class="project-header">
-    <h1>Metal Shader</h1>
-    <p class="project-tags">Blender · Shader Nodes · Procedural Materials</p>
+    <h1>Editable Blender Shader Extension</h1>
+    <p class="project-tags">Blender · MaterialX · OpenUSD · Procedural Materials</p>
   </header>
 
   <article class="project-body">
     <h3>Problem</h3>
     <p>
-      A weathered metallic surface with water droplets is difficult to paint by hand. The droplets need correct normal
-      detail, specular response, and scale variation across the surface without relying on texture maps.
+      A weathered metallic surface with water droplets is difficult to paint by hand, and one-off shader node graphs
+      do not travel well into a pipeline. Artists need editable parameters, and downstream tools need a material that
+      can export to interchange formats like MaterialX and OpenUSD.
     </p>
 
     <h3>Solution</h3>
     <p>
-      A procedural metal material built layer by layer in Blender's shader node editor: Musgrave multifractal for base
-      variation, distorted Voronoi for droplet regions, normal mapping for surface relief, and a metallic BSDF for the
-      final specular response.
+      I built a custom editable shader extension in Blender: a reusable procedural material assembled layer by layer
+      in the node editor, with exposed inputs for scale, roughness, and droplet density. The graph uses Musgrave
+      multifractal for base variation, distorted Voronoi for droplet regions, normal mapping for surface relief, and
+      a metallic BSDF for the final specular response.
+    </p>
+
+    <p>
+      The node group is structured so each layer maps cleanly to MaterialX nodes and to UsdPreviewSurface fields for
+      OpenUSD export. Noise-driven normal detail becomes interchangeable height/normal data, and the metallic response
+      aligns with standard roughness/metallic inputs rather than Blender-only node wiring.
     </p>
 
     <figure>
@@ -57,7 +65,7 @@
 
     <p>
       On top of that I layered a Voronoi texture, distorted with a Mapping node and Vector Math to break up the regular
-      cell pattern into soft, blob like droplet regions.
+      cell pattern into soft, blob-like droplet regions.
     </p>
 
     <figure>
@@ -76,7 +84,7 @@
     </figure>
 
     <p>
-      Adjusting the Musgrave scale and dimension settings pushed the bumps larger and more teardrop shaped, as if water
+      Adjusting the Musgrave scale and dimension settings pushed the bumps larger and more teardrop-shaped, as if water
       is pooling and running down the surface.
     </p>
 
@@ -85,11 +93,19 @@
       <figcaption>Final render with metallic BSDF and droplet normals</figcaption>
     </figure>
 
+    <h3>MaterialX and OpenUSD export</h3>
+    <p>
+      The extension is built for pipeline handoff: procedural layers are grouped and named so they can be translated to
+      MaterialX (<code>mx_noise</code>, <code>mx_bump</code>, standard surface outputs) or baked and assigned through
+      UsdPreviewSurface on OpenUSD export. Exposed inputs on the node group become shader parameters in the exported
+      material definition rather than buried inside the graph.
+    </p>
+    <!-- TODO: add export tool or addon name once wired up -->
+
     <h3>Outcome</h3>
     <p>
-      The finished shader plugs the normal map into a metallic BSDF with a dark base color and high roughness variation.
-      Specular highlights on each droplet sit against brushed metal underneath, giving the sense of condensation on a
-      cold steel surface, entirely from procedural nodes.
+      The finished material gives condensation on cold steel entirely from procedural nodes, while staying editable in
+      Blender and structured for export to MaterialX or OpenUSD without rebuilding the look from scratch.
     </p>
   </article>
 

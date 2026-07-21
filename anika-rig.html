@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Anika Rig: Varsha Danduri</title>
+  <title>Custom Dynamic Rigging: Varsha Danduri</title>
   <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
 </head>
@@ -19,28 +19,28 @@
 
 <div class="container container--narrow">
 
-  <a class="back-link" href="index.html#graphics">← Back to Portfolio</a>
+  <a class="back-link" href="index.html#pipeline-tools">← Back to Portfolio</a>
 
   <header class="project-header">
-    <h1>Anika Rig</h1>
-    <p class="project-tags">Blender · Rigging · Character Pipeline</p>
+    <h1>Custom Dynamic Rigging</h1>
+    <p class="project-tags">Blender · Shape Key Correction · IK/FK · Character Pipeline</p>
   </header>
 
   <article class="project-body">
     <div class="tech-spec">
-      Blender [version] · [N] bones · [N] tris · [N] shapekeys ([N] correctives, [N] expressions) · IK/FK limbs ·
+      Blender [version] · [N] bones · [N] tris · [N] shape keys ([N] correctives, [N] expressions) · IK/FK limbs ·
       custom skirt system · naming convention: [pattern]
     </div>
 
     <p>
-      Anika is a free, production style character rig I built to test the full asset pipeline from design through
-      deformation-ready delivery. The rig includes corrective and expression shapekeys, IK/FK switching on the limbs,
-      and a custom skirt system with pseudo collision detection.
+      I built custom dynamic rigging for Anika, a free production-style character used to test the full asset pipeline
+      from design through deformation-ready delivery. The work centers on shape key correction, IK/FK limb switching,
+      and a driver-based skirt system with pseudo collision detection.
     </p>
 
     <figure>
       <img src="assets/anika-rig/lead-character-turnaround.png" alt="Turnaround sketch of Anika" />
-      <figcaption>Sketch of Anika</figcaption>
+      <figcaption>Character design reference for the rigged asset</figcaption>
     </figure>
 
     <h3>Modeling</h3>
@@ -52,25 +52,25 @@
 
     <figure>
       <img src="assets/anika-rig/topology.png" alt="Wireframe topology of Anika" />
-      <figcaption>Wireframe of Anika</figcaption>
+      <figcaption>Wireframe topology</figcaption>
     </figure>
 
     <h3>Rigging</h3>
     <p>
-      I built the full armature with shapekeys for both corrective deformation and facial expressions on the body and
+      I built the full armature with shape keys for both corrective deformation and facial expressions on the body and
       face. Control placement was chosen to be intuitive for an animator: FK for fine posing, IK where reach and
       planting matter, and dedicated facial sliders grouped by region.
     </p>
     <!-- TODO: state rig origin, from scratch vs Rigify base -->
 
     <p>
-      Corrective shapekeys fire on joint limits so elbows, knees, and the torso hold volume instead of collapsing.
-      Expression shapekeys cover the major phoneme and emotion shapes an animator would need on a close up shot.
+      Corrective shape keys fire on joint limits so elbows, knees, and the torso hold volume instead of collapsing.
+      Expression shape keys cover the major phoneme and emotion shapes an animator would need on a close-up shot.
     </p>
 
     <figure>
       <img src="assets/anika-rig/rigged-character.png" alt="Rigged character with facial controls" />
-      <figcaption>Rigged character with facial and body controls</figcaption>
+      <figcaption>Facial and body controls on the finished rig</figcaption>
     </figure>
 
     <h3>Skirt rig</h3>
@@ -98,7 +98,7 @@
     <h3>Shaders and texturing</h3>
     <p>
       After rigging I moved to look development. I added seams, laid out UVs, and painted normals in Krita for a
-      hand painted surface read. I then hooked up the painted normal map to the character BSDF.
+      hand-painted surface read. I then hooked up the painted normal map to the character BSDF.
     </p>
 
     <figure>
@@ -124,7 +124,7 @@
         <img src="assets/anika-rig/final-hair.png" alt="Final hair shader" />
       </figure>
     </div>
-    <p class="figure-group-caption">Shader hair progress</p>
+    <p class="figure-group-caption">Hair shader progress</p>
 
     <p>
       For Anika's dress I wanted a painted silk look. I used the mesh normal as a vector input to a Voronoi texture,
@@ -142,13 +142,13 @@
     <p>
       The rig hierarchy separates deformation bones from control bones so an animator only touches the control layer.
       IK/FK switches live on the limb roots, and facial controls are grouped under a single face master for show/hide
-      in the outliner. Shapekeys are named by region and function (<code>corrective_elbow_L</code>,
+      in the outliner. Shape keys are named by region and function (<code>corrective_elbow_L</code>,
       <code>expr_smile</code>, etc.) so a pipeline script or importer can filter them by prefix.
     </p>
     <p>
       An animator needs the control rig visible, IK/FK set per limb before animation, and the skirt detection
       thresholds tuned if the character wears a long skirt in a sitting or walking cycle. For export, apply the
-      armature modifier and bake shapekeys if the target engine does not support them live.
+      armature modifier and bake shape keys if the target engine does not support them live.
     </p>
     <!-- TODO: fill in naming convention pattern once finalized -->
 
@@ -163,8 +163,8 @@
     </figure>
 
     <p>
-      Anika is a free rig with IK/FK limbs, corrective and expression shapekeys, and a custom skirt system. Download
-      the file above to inspect the hierarchy, test the controls, or use her in your own scenes.
+      The rig ships as a free asset with IK/FK limbs, corrective and expression shape keys, and a custom skirt system.
+      Download the file above to inspect the hierarchy, test the controls, or use Anika in your own scenes.
     </p>
   </article>
 
