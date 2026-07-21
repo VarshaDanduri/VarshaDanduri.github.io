@@ -19,19 +19,33 @@
 
 <div class="container container--narrow">
 
-  <a class="back-link" href="index.html#projects">← Back to Portfolio</a>
+  <a class="back-link" href="index.html#pipeline-tools">← Back to Portfolio</a>
 
   <header class="project-header">
     <h1>Kitin</h1>
-    <p class="project-tags">AI Security · Multi-Model · Cybersecurity</p>
+    <p class="project-tags">Process Automation · Security · Go</p>
   </header>
 
   <article class="project-body">
+    <h3>Problem</h3>
     <p>
-      Kitin is an AI security tool that takes a different approach to code analysis. Instead of sending your
-      codebase to a general-purpose LLM and hoping for accurate results, Kitin uses a multi-model system trained on
-      a history of real cybersecurity exploits. That training gives it higher accuracy on the vulnerability patterns
-      that actually show up in production code.
+      Security findings in a codebase often stall between detection and fix. Manual remediation is slow, git history
+      gets messy, and there is no reliable audit trail showing who changed what and when. Ad hoc database access during
+      triage also creates unnecessary exposure.
+    </p>
+
+    <h3>Solution</h3>
+    <p>
+      Kitin centers on a state driven git automation engine that handles the full remediation lifecycle: scan, classify,
+      open a tracked branch, apply a fix, and advance through review states. Every transition appends to an immutable
+      audit log so the full history is reconstructable without rewriting past records.
+    </p>
+
+    <p>
+      Database access runs through a constrained, parameterized SQL query set designed for least privilege. Analysts get
+      the rows they need for triage without open ended query access. On top of the automation layer, a multi model
+      classifier trained on real exploit patterns returns structured findings (severity, category, line number,
+      explanation, suggested fix) instead of free form LLM text.
     </p>
 
     <figure>
@@ -40,16 +54,9 @@
     </figure>
 
     <p>
-      From the terminal, you point Kitin at a file or directory and it returns structured findings: severity level,
-      category, the exact line, a plain-language explanation, and a suggested fix. Results also include an estimated
-      daily exposure cost and a breakdown by severity so you can prioritize what to patch first.
-    </p>
-
-    <p>
-      In the example above, Kitin flags hardcoded credentials, sensitive data logged to the console, SQL injection,
-      missing rate limiting on authentication endpoints, and missing Content-Security-Policy headers. Each finding
-      is tagged by type (injection, auth &amp; sessions, data exposure, hardening) rather than returned as free-form
-      LLM text.
+      From the terminal, you point Kitin at a file or directory and it returns prioritized results with an estimated
+      daily exposure cost and a breakdown by severity. Findings are tagged by type (injection, auth and sessions, data
+      exposure, hardening) so teams can route work to the right owner.
     </p>
 
     <figure>
@@ -58,11 +65,16 @@
     </figure>
 
     <p>
-      The same scan data is available through a mobile interface. The priority list surfaces high-severity issues
-      first, with issue count, daily exposure estimate, and per-finding detail on tap. The goal is to make security
-      review feel actionable: know what is wrong, how risky it is, and how to fix it, without wading through an
-      unstructured model response.
+      The same scan data is available through a mobile interface. The priority list surfaces high severity issues first,
+      with issue count, daily exposure estimate, and per finding detail on tap.
     </p>
+
+    <h3>Outcome</h3>
+    <p>
+      Security review becomes a tracked process with guardrails: automated git workflow, auditable state transitions,
+      and scoped data access. Teams see what is wrong, how risky it is, and how to fix it without unstructured model output.
+    </p>
+    <!-- TODO: add remediation throughput or audit compliance outcome if available -->
   </article>
 
 </div>

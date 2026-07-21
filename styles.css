@@ -120,6 +120,31 @@ nav {
 
 .social-links a:hover { color: #000; border-color: #000; }
 
+/* SKILLS STRIP */
+.skills-strip {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 3.5rem;
+  padding: 1.2rem 1.4rem;
+  background: #fff;
+  border: 1px solid #e4e4e4;
+  border-radius: 6px;
+}
+
+.skills-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 0.25rem;
+}
+
+.skills-list {
+  font-size: 0.78rem;
+  color: #777;
+  line-height: 1.45;
+}
+
 /* SECTION */
 h2 {
   font-size: 1.1rem;
@@ -130,8 +155,50 @@ h2 {
   margin-bottom: 1.5rem;
 }
 
-#projects h2 {
+#graphics h2,
+#ml-data h2,
+#leadership h2 {
   margin-top: 1rem;
+}
+
+.section-framing {
+  font-size: 0.9rem;
+  color: #666;
+  margin: -0.5rem 0 1.5rem;
+  max-width: 640px;
+}
+
+.leadership-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-bottom: 5rem;
+}
+
+.leadership-entry {
+  background: #fff;
+  border: 1px solid #e4e4e4;
+  border-radius: 6px;
+  padding: 1.1rem 1.2rem;
+}
+
+.leadership-role {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #222;
+  margin-bottom: 0.15rem;
+}
+
+.leadership-org {
+  font-size: 0.8rem;
+  color: #888;
+  margin-bottom: 0.5rem;
+}
+
+.leadership-detail {
+  font-size: 0.85rem;
+  color: #666;
+  line-height: 1.5;
 }
 
 /* PROJECT GRID */
@@ -155,6 +222,29 @@ h2 {
 
 .project-card:hover {
   box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+}
+
+.project-card--in-progress {
+  opacity: 0.72;
+  cursor: default;
+}
+
+.project-card--in-progress:hover {
+  box-shadow: none;
+}
+
+.project-status {
+  display: inline-block;
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #888;
+  background: #f0f0f0;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  padding: 0.15rem 0.45rem;
+  margin-bottom: 0.45rem;
 }
 
 .project-thumb {
@@ -309,6 +399,35 @@ h2 {
   font-weight: 700;
   color: #333;
   margin: 2rem 0 0.75rem;
+}
+
+.tech-spec {
+  font-size: 0.78rem;
+  color: #666;
+  background: #fff;
+  border: 1px solid #e4e4e4;
+  border-radius: 6px;
+  padding: 0.85rem 1rem;
+  margin-bottom: 1.5rem;
+  line-height: 1.55;
+}
+
+.download-btn {
+  display: inline-block;
+  font-size: 0.85rem;
+  font-weight: 400;
+  color: #333;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 0.55rem 1.1rem;
+  text-decoration: none;
+  margin: 1rem 0 1.5rem;
+}
+
+.download-btn:hover {
+  border-color: #999;
+  color: #000;
 }
 
 .project-body pre {

@@ -27,10 +27,18 @@
   </header>
 
   <article class="project-body">
+    <h3>Problem</h3>
     <p>
-      A multithreaded C program that applies 3×3 convolution kernels to images. Given an input file and a filter
-      type, it loads the image with stb_image, convolves each pixel against a kernel matrix, and writes the result
-      as PNG. Six filters are supported (edge, sharpen, blur, Gaussian blur, emboss, and identity).
+      Applying image filters to large photos on a single thread is slow. A convolution kernel touches every pixel and
+      its neighborhood, so the work is embarrassingly parallel but needs correct border handling and a clean filter
+      interface.
+    </p>
+
+    <h3>Solution</h3>
+    <p>
+      A multithreaded C program that applies 3×3 convolution kernels to images. Given an input file and a filter type,
+      it loads the image with stb_image, convolves each pixel against a kernel matrix, and writes the result as PNG.
+      Six filters are supported: edge, sharpen, blur, Gaussian blur, emboss, and identity.
     </p>
 
     <figure>
@@ -39,9 +47,8 @@
     </figure>
 
     <p>
-      Each output pixel is a weighted sum of its 3×3 neighborhood. Edge pixels clamp to the nearest border value
-      so the kernel never reads out of bounds. The edge-detection kernel highlights intensity changes, which is
-      why high-contrast scenes like this produce strong line work.
+      Each output pixel is a weighted sum of its 3×3 neighborhood. Edge pixels clamp to the nearest border value so the
+      kernel never reads out of bounds.
     </p>
 
     <figure>
@@ -77,6 +84,13 @@
   {{-2,-1,0},{-1,1,1},{0,1,2}},            // emboss
   {{0,0,0},{0,1,0},{0,0,0}}                // identity
 };</code></pre>
+
+    <h3>Outcome</h3>
+    <p>
+      The same pipeline produces six filter outputs from one input image, with row parallel execution across pthread
+      workers. Filter selection is a single kernel matrix swap with no duplicated convolution logic.
+    </p>
+    <!-- TODO: add speedup vs single threaded if benchmarked -->
 
     <p>
       <a href="https://github.com/VarshaDanduri/CISC372_picProject" target="_blank">View on GitHub →</a>

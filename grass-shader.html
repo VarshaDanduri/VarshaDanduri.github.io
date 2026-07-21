@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Grass Shader: Varsha Danduri</title>
+  <title>Grass Tuning Tool: Varsha Danduri</title>
   <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
 </head>
@@ -19,17 +19,37 @@
 
 <div class="container container--narrow">
 
-  <a class="back-link" href="index.html#graphics">← Back to Portfolio</a>
+  <a class="back-link" href="index.html#pipeline-tools">← Back to Portfolio</a>
 
   <header class="project-header">
-    <h1>Grass Shader</h1>
-    <p class="project-tags">Unity · Compute Shader · HLSL · C#</p>
+    <h1>Grass Tuning Tool</h1>
+    <p class="project-tags">Unity · C# · Artist Tools · HLSL</p>
   </header>
 
   <article class="project-body">
+    <h3>Problem</h3>
     <p>
-      A Unity URP grass system that generates all blade geometry on the GPU in parallel using a compute shader,
-      one thread per source triangle, output streamed to an append buffer, drawn in a single indirect draw call.
+      Procedural grass in Unity usually means editing compute shader constants or recompiling HLSL every time an artist
+      wants to change density, blade height, wind strength, or LOD behavior. That slows iteration and keeps shader
+      knowledge on the engineering side of the team.
+    </p>
+
+    <h3>Solution</h3>
+    <p>
+      I built an in editor tuning tool with an artist facing inspector UI. Exposed parameters map directly to the
+      grass and wind settings on <code>ProceduralGrassRenderer</code>, so artists can iterate in play mode without
+      touching code. The tool can also generate a tileable Perlin noise texture for wind sampling.
+    </p>
+
+    <figure>
+      <video src="assets/grass-shader/tool-use.mp4" controls playsinline></video>
+      <figcaption>Adjusting grass and wind settings in the Unity inspector</figcaption>
+    </figure>
+
+    <p>
+      Under the hood, a compute shader generates blade geometry on the GPU (one thread per source triangle), streams
+      output to an append buffer, and draws in a single indirect call. The editor tool is the interface; the shader
+      system is the engine behind it.
     </p>
 
     <figure>
@@ -37,20 +57,11 @@
       <figcaption>Procedural grass in scene</figcaption>
     </figure>
 
-    <h3>One blade per triangle</h3>
+    <h3>Compute shader details</h3>
     <p>
-      Each thread in the compute kernel handles one triangle from the source mesh. It finds the triangle center in
-      world space, builds a tangent-to-world matrix from the triangle edges, and sprouts a blade from that point.
-      Blade width and height are randomized per position using <code>randNegative1to1</code>.
-    </p>
-
-    <h3>Building sections from a single strip of triangles</h3>
-    <p>
-      A blade is not one triangle. It is a strip of square sections stacked along the height of the blade. For each
-      segment, the compute shader places two vertices at the same height <code>v</code>, then adds a final tip vertex.
-      Adjacent groups of three vertices become the draw triangles appended to the buffer. As <code>v</code> rises toward
-      the tip, the horizontal offset <code>u</code> converges on 0.5, tapering the blade. Segment count is reduced at
-      distance via LOD so far blades use fewer sections.
+      Each thread handles one triangle from the source mesh, finds the triangle center in world space, builds a
+      tangent to world matrix, and sprouts a blade from that point. Blade width and height are randomized per position.
+      A blade is a strip of square sections stacked along height, with segment count reduced at distance via LOD.
     </p>
 
     <figure>
@@ -58,12 +69,9 @@
       <figcaption>How blade segments stack and form draw triangles</figcaption>
     </figure>
 
-    <h3>Bend, twist, and wind</h3>
     <p>
-      Rotation is applied in order: bend, twist, convert to world space, then wind. Bend increases toward the tip using
-      <code>pow(v, _BladeCurvature)</code>. Wind rotation uses the same height multiplier <code>v</code>, so the base
-      stays anchored and the tip moves the most. Wind strength comes from procedural gradient noise sampled in world
-      space and scrolled over time.
+      Bend, twist, and wind rotation apply in order. Wind strength comes from procedural gradient noise sampled in
+      world space and scrolled over time, so the base stays anchored and the tip moves the most.
     </p>
 
     <figure>
@@ -71,19 +79,12 @@
       <figcaption>Wind moving through the field</figcaption>
     </figure>
 
-    <h3>Shading and the Unity editor</h3>
+    <h3>Outcome</h3>
     <p>
-      The fragment shader lerps from base color to tip color by height, darkens albedo where wind strength is high,
-      and blends lit and shadowed areas using directional light and a custom shadow tint. On the C# side,
-      <code>ProceduralGrassRenderer</code> uploads mesh data, dispatches the compute shader each frame, and draws
-      with <code>Graphics.DrawProceduralIndirect</code>. A custom editor exposes grass and wind settings and can
-      generate a tileable Perlin noise texture for wind.
+      Artists can tune the full grass field from the inspector and see results immediately. Shader complexity stays
+      encapsulated behind exposed parameters and sensible defaults.
     </p>
-
-    <figure>
-      <video src="assets/grass-shader/tool-use.mp4" controls playsinline></video>
-      <figcaption>Adjusting grass and wind settings in the Unity inspector</figcaption>
-    </figure>
+    <!-- TODO: add iteration time or team usage outcome if available -->
 
     <p>
       <a href="https://github.com/VarshaDanduri/procedural-grass-unity/tree/main/Shader" target="_blank">View source on GitHub →</a>

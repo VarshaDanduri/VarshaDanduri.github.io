@@ -23,13 +23,19 @@
 
   <header class="project-header">
     <h1>Anika Rig</h1>
-    <p class="project-tags">Blender · Modelling · Rigging · Shaders</p>
+    <p class="project-tags">Blender · Rigging · Character Pipeline</p>
   </header>
 
   <article class="project-body">
+    <div class="tech-spec">
+      Blender [version] · [N] bones · [N] tris · [N] shapekeys ([N] correctives, [N] expressions) · IK/FK limbs ·
+      custom skirt system · naming convention: [pattern]
+    </div>
+
     <p>
-      The Anika rig is a free-rig I created to test and build upon the character creation process,
-      including both artistic aspects (design, modelling) as well as more technical parts (rigging, shaders).
+      Anika is a free, production style character rig I built to test the full asset pipeline from design through
+      deformation-ready delivery. The rig includes corrective and expression shapekeys, IK/FK switching on the limbs,
+      and a custom skirt system with pseudo collision detection.
     </p>
 
     <figure>
@@ -37,10 +43,11 @@
       <figcaption>Sketch of Anika</figcaption>
     </figure>
 
+    <h3>Modeling</h3>
     <p>
-      I had originally designed for a short film I created, and started with a sketch. After a turnaround sketch,
-      I began poly-modelling the character. Here I made sure to keep in mind edge flow for deformations, and keeping
-      in context the poles and the density of quads.
+      I designed Anika for a short film and started with a turnaround sketch. During poly modeling I kept edge flow
+      in mind for deformation, paying attention to pole placement and quad density so the mesh would hold up under
+      the rig.
     </p>
 
     <figure>
@@ -48,23 +55,62 @@
       <figcaption>Wireframe of Anika</figcaption>
     </figure>
 
+    <h3>Rigging</h3>
     <p>
-      After that modelling the character, I began texturing. I added seams to the character, and made the UV. Since I wanted
-      to go for a more hand painted look, I started normal-painting. I generated a normal map of the character, and
-      started painting the direction of the normal in Krita. I think hooked up the new normal paint to the BSDF of the character.
+      I built the full armature with shapekeys for both corrective deformation and facial expressions on the body and
+      face. Control placement was chosen to be intuitive for an animator: FK for fine posing, IK where reach and
+      planting matter, and dedicated facial sliders grouped by region.
+    </p>
+    <!-- TODO: state rig origin, from scratch vs Rigify base -->
+
+    <p>
+      Corrective shapekeys fire on joint limits so elbows, knees, and the torso hold volume instead of collapsing.
+      Expression shapekeys cover the major phoneme and emotion shapes an animator would need on a close up shot.
+    </p>
+
+    <figure>
+      <img src="assets/anika-rig/rigged-character.png" alt="Rigged character with facial controls" />
+      <figcaption>Rigged character with facial and body controls</figcaption>
+    </figure>
+
+    <h3>Skirt rig</h3>
+    <p>
+      I built a custom skirt system instead of relying on cloth simulation. Detection bones sit near the legs and
+      measure rotation past a threshold. When a leg crosses that threshold, drivers push the skirt deformation bones
+      to fold the mesh away from the limb. Separate skirt bones between the detection points smooth the curve so the
+      fold reads as fabric rather than a single hard pivot.
+    </p>
+    <!-- TODO: describe driver and constraint setup -->
+
+    <figure>
+      <video src="assets/anika-rig/skirt-bone-rig.mp4" controls playsinline></video>
+      <figcaption>Skirt rig responding to leg rotation</figcaption>
+    </figure>
+
+    <h3>Skirt rig V2 (planned)</h3>
+    <p>
+      The current system uses a single detection bone per side, which produces a global skirt response. Asymmetric
+      leg motion, like lifting one knee, moves the whole skirt instead of just the affected panel. The planned fix is
+      radial segmentation into 8 to 12 vertical bone chains with angular weighted drivers so each panel responds
+      independently to the nearest leg.
+    </p>
+
+    <h3>Shaders and texturing</h3>
+    <p>
+      After rigging I moved to look development. I added seams, laid out UVs, and painted normals in Krita for a
+      hand painted surface read. I then hooked up the painted normal map to the character BSDF.
     </p>
 
     <figure>
       <img src="assets/anika-rig/New_Normal_Body.png" alt="Painted normal map with UVs" />
-      <figcaption>Painted Normal map with UVs</figcaption>
+      <figcaption>Painted normal map with UVs</figcaption>
     </figure>
 
     <p>
-      I began now to texture the hair. I created a custom shader which used the y-axis of the UV. Using a perline noise node,
-      I could create differentiating lines on the UV. I used a color-ramp to generate a band around the middle of the hair.
-      That band follows the camera direction to have the location shift higher when the camera is higher and lower when the
-      camera is lower. Then I added a color mix, to use the colors of the hair and change the highlighting. I passed this into
-      a BSDF node to then have the highlight be interactive with the lighting, and change hue based off it.
+      For the hair I built a custom shader driven by the y axis of the UV. A Perlin noise node creates differentiating
+      lines on the UV, and a color ramp generates a band around the middle of the hair. That band follows the camera
+      direction so the highlight shifts higher when the camera is higher and lower when it is lower. A color mix node
+      blends hair colors and passes the result into a BSDF so the highlight reacts to scene lighting.
     </p>
 
     <div class="figure-row">
@@ -81,12 +127,10 @@
     <p class="figure-group-caption">Shader hair progress</p>
 
     <p>
-      After that I wanted to create a fun looking silk texture for Anika dress. I wanted to create a painted looking, so for
-      that I used the meshes normal, and plugged that in as a vector for a Voronoi texture. The texture allows broad bands
-      of color on parts of the mesh that does not change in height much, and more bands of complex places of the mesh. After
-      that, I then used the reflection of the mesh, and applied a color ramp to make the more reflective parts metallic.
-      I thought this through because of the way silk, specificallly <em>retained sericin</em> has a more metallic look. After
-      that, I added a color mix node to make the darker parts of the color to have a blue-ish tint, to make it colorful to look at.
+      For Anika's dress I wanted a painted silk look. I used the mesh normal as a vector input to a Voronoi texture,
+      which produces broad color bands on flat areas and tighter bands on complex geometry. I then used reflection with
+      a color ramp so the more reflective regions read metallic, matching how silk with retained sericin catches light.
+      A final color mix adds a blue tint to the darker regions.
     </p>
 
     <figure>
@@ -94,30 +138,34 @@
       <figcaption>Silk shading for the dress</figcaption>
     </figure>
 
+    <h3>Downstream considerations</h3>
     <p>
-      Finally was rigging. I used a rig that included shapekeys, both as corrective, and to make different parts of the facial
-      expressions. This was used for the body and the face. The rig controls were chosen to be intuitive to the animator.
-      Another part was the cutom rig I made for Anika's skirt. I created a pseudo-collision detection with the bones, that
-      would only deform if the bones moved past a certain rotation. This then affected the mesh. I used both detection bones,
-      as well as skirt bones to create a smoother curve when the mesh moved.
+      The rig hierarchy separates deformation bones from control bones so an animator only touches the control layer.
+      IK/FK switches live on the limb roots, and facial controls are grouped under a single face master for show/hide
+      in the outliner. Shapekeys are named by region and function (<code>corrective_elbow_L</code>,
+      <code>expr_smile</code>, etc.) so a pipeline script or importer can filter them by prefix.
     </p>
-
-    <figure>
-      <img src="assets/anika-rig/rigged-character.png" alt="Rigged character with facial controls" />
-    </figure>
-
-    <figure>
-      <video src="assets/anika-rig/skirt-bone-rig.mp4" controls playsinline></video>
-      <figcaption>Rigged face and video of skirt rigging</figcaption>
-    </figure>
-
     <p>
-      And with that Anika model is complete, both a learning expeirence for me, as well as a free rig.
+      An animator needs the control rig visible, IK/FK set per limb before animation, and the skirt detection
+      thresholds tuned if the character wears a long skirt in a sitting or walking cycle. For export, apply the
+      armature modifier and bake shapekeys if the target engine does not support them live.
+    </p>
+    <!-- TODO: fill in naming convention pattern once finalized -->
+
+    <!-- TODO: set href to rig file path -->
+    <p>
+      <a class="download-btn" href="#">Download rig file</a>
     </p>
 
     <figure>
       <img src="assets/anika-rig/rendered-character.png" alt="Final rendered character" />
+      <figcaption>Final render of Anika</figcaption>
     </figure>
+
+    <p>
+      Anika is a free rig with IK/FK limbs, corrective and expression shapekeys, and a custom skirt system. Download
+      the file above to inspect the hierarchy, test the controls, or use her in your own scenes.
+    </p>
   </article>
 
 </div>

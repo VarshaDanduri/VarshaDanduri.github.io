@@ -19,7 +19,7 @@
 
 <div class="container container--narrow">
 
-  <a class="back-link" href="index.html#projects">← Back to Portfolio</a>
+  <a class="back-link" href="index.html#ml-data">← Back to Portfolio</a>
 
   <header class="project-header">
     <h1>Aura</h1>
@@ -27,29 +27,43 @@
   </header>
 
   <article class="project-body">
+    <h3>Problem</h3>
     <p>
-      An artist created 500 brushstrokes across five emotional categories (joy, calm, neutral, sad, anger), each
-      paired with a written description tagging its emotional intent. We encode these descriptions using a pretrained
-      sentence-transformer (all-MiniLM-L6-v2), producing 384-dimensional embeddings that preserve the artist's affective
-      intent as a learned representation.
+      Biosignal data from wearables or facial capture is hard to present in a way that feels human. Raw waveforms and
+      classification labels do not convey emotional intent, and generative models produce output disconnected from a
+      specific artist's hand.
+    </p>
+
+    <h3>Solution</h3>
+    <p>
+      An artist created 500 brushstrokes across five emotional categories (joy, calm, neutral, sad, anger), each paired
+      with a written description tagging its emotional intent. We encode these descriptions using a pretrained
+      sentence transformer (all-MiniLM-L6-v2), producing 384 dimensional embeddings that preserve the artist's
+      affective intent as a learned representation.
     </p>
 
     <figure>
-      <img src="assets/aura/facial-capture.png" alt="Real-time facial biosignal capture with emotion classification" />
-      <figcaption>Real-time biosignal capture mapped to emotional categories</figcaption>
+      <img src="assets/aura/facial-capture.png" alt="Real time facial biosignal capture with emotion classification" />
+      <figcaption>Real time biosignal capture mapped to emotional categories</figcaption>
     </figure>
 
     <p>
-      A k-nearest-neighbors classifier maps real-time biosignals onto this space, and UMAP projects it into 2D canvas
-      coordinates. Each stroke on the painting is chosen by matching the user's physiological-emotional state to an
-      artist's felt interpretation of that same emotion. The painting is a translation of biosignal data through the
-      artist's emotional vocabulary, not stochastic generation.
+      A k nearest neighbors classifier maps real time biosignals onto this space, and UMAP projects it into 2D canvas
+      coordinates. Each stroke on the painting is chosen by matching the user's physiological emotional state to an
+      artist's felt interpretation of that same emotion.
     </p>
 
     <figure>
-      <img src="assets/aura/paint.png" alt="Painting generated from biosignal-matched brushstrokes" />
+      <img src="assets/aura/paint.png" alt="Painting generated from biosignal matched brushstrokes" />
       <figcaption>Output painting built from matched artist brushstrokes</figcaption>
     </figure>
+
+    <h3>Outcome</h3>
+    <p>
+      The painting is a translation of biosignal data through the artist's emotional vocabulary, not stochastic
+      generation. Each session produces a unique composition grounded in 500 curated strokes.
+    </p>
+    <!-- TODO: add latency or classification accuracy outcome if available -->
   </article>
 
 </div>

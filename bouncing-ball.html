@@ -27,10 +27,17 @@
   </header>
 
   <article class="project-body">
+    <h3>Problem</h3>
     <p>
-      An OpenGL simulation that parallelizes hundreds of bouncing balls on the GPU. Each ball's position and velocity
-      live in a 1×N floating-point texture, updated every frame by a physics fragment shader.
-      Collisions use the law of conservation of momentum; wall bounces keep balls inside the viewport.
+      Simulating hundreds of colliding bodies on the CPU means serial loops over every pair each frame. That does not
+      scale, and it keeps physics off the same hardware that renders the scene.
+    </p>
+
+    <h3>Solution</h3>
+    <p>
+      An OpenGL simulation that parallelizes ball physics on the GPU. Each ball's position and velocity live in a 1×N
+      floating point texture, updated every frame by a physics fragment shader. Collisions use conservation of momentum;
+      wall bounces keep balls inside the viewport.
     </p>
 
     <figure>
@@ -138,6 +145,13 @@ float r = fract(sin(id * 127.1) * 43758.5);
 float g = fract(sin(id * 269.5) * 23421.6);
 float b = fract(sin(id * 419.2) * 67890.3);
 FragColor = vec4(r, g, b, 1.0);</code></pre>
+
+    <h3>Outcome</h3>
+    <p>
+      Hundreds of balls collide and render in real time with one physics pass and one instanced draw call. State stays
+      on the GPU between frames through texture ping ponging, with no per ball CPU loop.
+    </p>
+    <!-- TODO: add ball count or frame time benchmark if available -->
 
     <p>
       <a href="https://github.com/VarshaDanduri/bouncing-ball" target="_blank">View source on GitHub →</a>

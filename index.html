@@ -25,8 +25,9 @@
     <div class="about-text">
       <h1>Varsha Danduri</h1>
       <p>
-        Hi! I'm a student passionate about computer graphics, technical art, and machine learning.
-        I enjoy building characters, shaders, renderers, and AI tools that solve real problems.
+        I build the pipelines and tools that move data and assets through production. ML infrastructure on the
+        research side, asset and DCC tooling on the graphics side, plus enough hands-on modeling and rigging to
+        know what breaks downstream.
       </p>
       <p>Feel free to explore my portfolio, or connect with me below.</p>
       <div class="social-links">
@@ -37,8 +38,92 @@
     </div>
   </div>
 
+  <!-- SKILLS -->
+  <div class="skills-strip">
+    <div class="skills-group">
+      <p class="skills-label">Pipeline &amp; Tools</p>
+      <p class="skills-list">Python, USD, Blender Python API, Docker, Airflow, Git automation</p>
+    </div>
+    <div class="skills-group">
+      <p class="skills-label">Data &amp; Backend</p>
+      <p class="skills-list">PostgreSQL, Apache Kafka, Snowflake, Flask, Node.js, CI/CD (GitHub Actions)</p>
+    </div>
+    <div class="skills-group">
+      <p class="skills-label">Graphics</p>
+      <p class="skills-list">HLSL, GLSL, OpenGL, C++, Unity, Blender</p>
+    </div>
+    <div class="skills-group">
+      <p class="skills-label">ML</p>
+      <p class="skills-list">Multimodal pipelines, PyTorch, LoRA fine tuning</p>
+    </div>
+  </div>
+
   <!-- PORTFOLIO -->
   <div id="portfolio">
+
+    <div id="pipeline-tools">
+      <h2>Pipeline &amp; Tools</h2>
+      <div class="projects">
+
+        <a class="project-card" href="mimic-pipeline.html">
+          <img class="project-thumb" src="assets/mimic-pipeline/updated_framework.png" alt="Multimodal Clinical Data Pipeline" />
+          <div class="project-info">
+            <p class="project-name">Multimodal Clinical Data Pipeline</p>
+            <p class="project-subtitle">Extended an open source clinical ML pipeline from structured data only to multimodal ingestion, preprocessing, and automated training</p>
+            <p class="project-tags">Python, Data Pipeline, Multimodal ML</p>
+          </div>
+        </a>
+
+        <a class="project-card" href="grass-shader.html">
+          <img class="project-thumb" src="assets/grass-shader/grass-image.jpeg" alt="Grass Tuning Tool" />
+          <div class="project-info">
+            <p class="project-name">Grass Tuning Tool</p>
+            <p class="project-subtitle">In-editor UI so artists can tune procedural grass density, wind, and LOD without touching shader code</p>
+            <p class="project-tags">Unity, C#, Artist Tools</p>
+          </div>
+        </a>
+
+        <a class="project-card" href="kitin.html">
+          <img class="project-thumb" src="assets/kitin/terminal.png" alt="Kitin" />
+          <div class="project-info">
+            <p class="project-name">Kitin</p>
+            <p class="project-subtitle">State driven git automation for the full remediation lifecycle, with append only audit logs and least privilege SQL access</p>
+            <p class="project-tags">Process Automation, Go, Security</p>
+          </div>
+        </a>
+
+        <div class="project-card project-card--in-progress">
+          <div class="project-thumb-placeholder"><span>In progress</span></div>
+          <div class="project-info">
+            <p class="project-status">In Progress</p>
+            <p class="project-name">Asset Publish &amp; Versioning System</p>
+            <p class="project-subtitle">One click publish with validation, versioning, Postgres metadata, and downstream job triggering via Airflow, DVC, and Docker</p>
+            <p class="project-tags">Python, Airflow, DVC, PostgreSQL</p>
+          </div>
+        </div>
+
+        <div class="project-card project-card--in-progress">
+          <div class="project-thumb-placeholder"><span>In progress</span></div>
+          <div class="project-info">
+            <p class="project-status">In Progress</p>
+            <p class="project-name">Blender to USD Exporter</p>
+            <p class="project-subtitle">Custom Blender addon exporting layered USD with geometry, material, and rig sublayers plus Principled BSDF to UsdPreviewSurface mapping</p>
+            <p class="project-tags">Blender Python API, USD</p>
+          </div>
+        </div>
+
+        <div class="project-card project-card--in-progress">
+          <div class="project-thumb-placeholder"><span>In progress</span></div>
+          <div class="project-info">
+            <p class="project-status">In Progress</p>
+            <p class="project-name">Asset Validator</p>
+            <p class="project-subtitle">Standalone QC tool for naming, transforms, UVs, materials, and texture paths, with a safe autofix mode</p>
+            <p class="project-tags">Python, Blender Python API</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
 
     <div id="graphics">
       <h2>Graphics</h2>
@@ -48,17 +133,8 @@
           <img class="project-thumb" src="assets/anika-rig/rigged-character.png" alt="Anika Rig" />
           <div class="project-info">
             <p class="project-name">Anika Rig</p>
-            <p class="project-subtitle">Full character creation process</p>
-            <p class="project-tags">Blender, Rigging, Shaders</p>
-          </div>
-        </a>
-
-        <a class="project-card" href="grass-shader.html">
-          <img class="project-thumb" src="assets/grass-shader/grass-image.jpeg" alt="Grass Shader" />
-          <div class="project-info">
-            <p class="project-name">Grass Shader</p>
-            <p class="project-subtitle">GPU-generated grass blades with wind animation, LOD, and an in-editor tuning tool</p>
-            <p class="project-tags">Unity, Compute Shader, HLSL</p>
+            <p class="project-subtitle">Production style character rig with corrective shapekeys, IK/FK limbs, and a custom skirt collision system</p>
+            <p class="project-tags">Blender, Rigging, Pipeline</p>
           </div>
         </a>
 
@@ -84,7 +160,7 @@
           <video class="project-thumb" src="assets/bouncing-ball/bouncing-ball-video.mp4" muted loop autoplay playsinline></video>
           <div class="project-info">
             <p class="project-name">Bouncing Ball</p>
-            <p class="project-subtitle">GPU-parallel ball physics with texture-based state and instanced rendering</p>
+            <p class="project-subtitle">GPU parallel ball physics with texture based state and instanced rendering</p>
             <p class="project-tags">OpenGL, GLSL, C++</p>
           </div>
         </a>
@@ -101,37 +177,43 @@
       </div>
     </div>
 
-    <div id="projects">
-      <h2>Projects</h2>
+    <div id="ml-data">
+      <h2>Machine Learning &amp; Data</h2>
       <div class="projects">
-
-        <a class="project-card" href="kitin.html">
-          <img class="project-thumb" src="assets/kitin/terminal.png" alt="Kitin" />
-          <div class="project-info">
-            <p class="project-name">Kitin</p>
-            <p class="project-subtitle">AI security with multi-model exploit detection, built for accuracy over LLM guessing</p>
-            <p class="project-tags">AI Security, Multi-Model, Go</p>
-          </div>
-        </a>
-
-        <a class="project-card" href="mimic-pipeline.html">
-          <img class="project-thumb" src="assets/mimic-pipeline/updated_framework.png" alt="MIMIC-IV Data Pipeline" />
-          <div class="project-info">
-            <p class="project-name">MIMIC-IV Data Pipeline</p>
-            <p class="project-subtitle">Multimodal data cleaning, preprocessing, and automatic model training for clinical researchers</p>
-            <p class="project-tags">Python, Healthcare ML, Data Pipeline</p>
-          </div>
-        </a>
 
         <a class="project-card" href="aura.html">
           <img class="project-thumb" src="assets/aura/facial-capture.png" alt="Aura" />
           <div class="project-info">
             <p class="project-name">Aura</p>
-            <p class="project-subtitle">Biosignal-driven painting through an artist's emotional brushstroke vocabulary</p>
+            <p class="project-subtitle">Real time biosignal to brushstroke mapping through an artist's emotional vocabulary</p>
             <p class="project-tags">Biosignals, Sentence Transformers, UMAP</p>
           </div>
         </a>
 
+      </div>
+    </div>
+
+    <div id="leadership">
+      <h2>Leadership</h2>
+      <p class="section-framing">
+        I care about making technical work reachable for people who aren't specialists, which is the same reason I build tools.
+      </p>
+      <div class="leadership-list">
+        <div class="leadership-entry">
+          <p class="leadership-role">Vice President, Google Developer Group</p>
+          <p class="leadership-org">University of Delaware</p>
+          <p class="leadership-detail">
+            Lead a developer community chapter and organize technical programming, including AI in Action, a regional
+            conference for roughly 500 developers and creators.
+          </p>
+        </div>
+        <div class="leadership-entry">
+          <p class="leadership-role">Treasurer, ACM-W</p>
+          <p class="leadership-org">University of Delaware</p>
+          <p class="leadership-detail">
+            Manage chapter finances and support programming that lowers the barrier for women entering computing fields.
+          </p>
+        </div>
       </div>
     </div>
 
