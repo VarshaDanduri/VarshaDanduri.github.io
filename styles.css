@@ -155,7 +155,7 @@ h2 {
   margin-bottom: 1.5rem;
 }
 
-#software-engineering h2,
+#graphics h2,
 #ml-data h2,
 #leadership h2 {
   margin-top: 1rem;
@@ -457,4 +457,217 @@ footer {
 
 footer a {
   color: #aaa;
+}
+
+.container--resume {
+  max-width: 900px;
+}
+
+/* RESUME */
+.resume-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-bottom: 1.2rem;
+}
+
+.download-btn--secondary {
+  background: #f8f8f8;
+}
+
+.pdf-viewer {
+  background: #fff;
+  border: 1px solid #e4e4e4;
+  border-radius: 6px;
+  overflow: hidden;
+  margin-bottom: 0.75rem;
+  height: min(82vh, 980px);
+}
+
+.pdf-viewer iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: block;
+}
+
+.pdf-viewer-fallback {
+  font-size: 0.8rem;
+  color: #888;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.pdf-viewer-fallback a {
+  color: #555;
+  border-bottom: 1px solid #ccc;
+  text-decoration: none;
+}
+
+.pdf-viewer-fallback a:hover {
+  color: #000;
+  border-color: #999;
+}
+
+.web-resume-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #888;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+@media print {
+  nav,
+  footer,
+  .resume-toolbar,
+  .pdf-viewer,
+  .pdf-viewer-fallback,
+  .web-resume-label {
+    display: none;
+  }
+
+  .container {
+    padding-top: 0;
+    max-width: none;
+  }
+
+  .resume {
+    border: none;
+    box-shadow: none;
+    padding: 0;
+  }
+
+  body {
+    background: #fff;
+    font-size: 11pt;
+  }
+
+  .resume a {
+    color: #000;
+    border: none;
+  }
+}
+
+.resume {
+  background: #fff;
+  border: 1px solid #e4e4e4;
+  border-radius: 6px;
+  padding: 2rem 2.2rem 2.5rem;
+  margin-bottom: 3rem;
+  font-size: 0.88rem;
+  line-height: 1.55;
+  color: #333;
+}
+
+.resume-header {
+  text-align: center;
+  margin-bottom: 1.8rem;
+  padding-bottom: 1.2rem;
+  border-bottom: 1px solid #e8e8e8;
+}
+
+.resume-header h1 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  letter-spacing: 0.02em;
+}
+
+.resume-contact {
+  font-size: 0.78rem;
+  color: #666;
+  line-height: 1.6;
+}
+
+.resume-contact a {
+  color: #555;
+  text-decoration: none;
+  border-bottom: 1px solid #ddd;
+}
+
+.resume-contact a:hover {
+  color: #000;
+  border-color: #999;
+}
+
+.resume-section {
+  margin-bottom: 1.5rem;
+}
+
+.resume-section h2 {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #444;
+  border-bottom: 1px solid #e0e0e0;
+  padding-bottom: 0.35rem;
+  margin-bottom: 0.85rem;
+}
+
+.resume-section p {
+  margin-bottom: 0.45rem;
+  color: #444;
+}
+
+.resume-section p strong {
+  font-weight: 700;
+  color: #333;
+}
+
+.resume-section ul {
+  margin: 0.25rem 0 0 1.1rem;
+  padding: 0;
+}
+
+.resume-section li {
+  margin-bottom: 0.4rem;
+  color: #444;
+}
+
+.resume-entry {
+  margin-bottom: 1.1rem;
+}
+
+.resume-entry-head {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.25rem 1rem;
+  margin-bottom: 0.25rem;
+}
+
+.resume-entry-title {
+  font-weight: 700;
+  color: #222;
+  flex: 1 1 14rem;
+}
+
+.resume-entry-date {
+  font-size: 0.78rem;
+  color: #777;
+  white-space: nowrap;
+}
+
+.resume-entry-sub {
+  font-size: 0.82rem;
+  color: #555;
+  margin-bottom: 0.35rem;
+}
+
+@media (max-width: 600px) {
+  .resume {
+    padding: 1.4rem 1.2rem 2rem;
+  }
+
+  .resume-entry-head {
+    flex-direction: column;
+  }
+
+  .resume-entry-date {
+    white-space: normal;
+  }
 }

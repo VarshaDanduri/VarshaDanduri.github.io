@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Bouncing Ball: Varsha Danduri</title>
+  <title>GPU Parallelization on OpenGL: Varsha Danduri</title>
   <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
 </head>
@@ -14,16 +14,17 @@
   <ul class="nav-links">
     <li><a href="index.html#about">About</a></li>
     <li><a href="index.html#portfolio" class="active">Portfolio</a></li>
+    <li><a href="resume.html">Resume</a></li>
   </ul>
 </nav>
 
 <div class="container container--narrow">
 
-  <a class="back-link" href="index.html#software-engineering">← Back to Portfolio</a>
+  <a class="back-link" href="index.html#graphics">← Back to Portfolio</a>
 
   <header class="project-header">
-    <h1>Bouncing Ball</h1>
-    <p class="project-tags">OpenGL · GLSL · C++ · GPU Physics</p>
+    <h1>GPU Parallelization on OpenGL</h1>
+    <p class="project-tags">OpenGL · GLSL · C++ · GPU Compute</p>
   </header>
 
   <article class="project-body">
@@ -35,9 +36,9 @@
 
     <h3>Solution</h3>
     <p>
-      An OpenGL simulation that parallelizes ball physics on the GPU. Each ball's position and velocity live in a 1×N
-      floating point texture, updated every frame by a physics fragment shader. Collisions use conservation of momentum;
-      wall bounces keep balls inside the viewport.
+      I GPU-parallelized the simulation on OpenGL. Each ball's position and velocity live in a 1×N floating-point
+      texture, updated every frame by a physics fragment shader. Collisions use conservation of momentum; wall bounces
+      keep balls inside the viewport.
     </p>
 
     <figure>
@@ -148,8 +149,8 @@ FragColor = vec4(r, g, b, 1.0);</code></pre>
 
     <h3>Outcome</h3>
     <p>
-      Hundreds of balls collide and render in real time with one physics pass and one instanced draw call. State stays
-      on the GPU between frames through texture ping ponging, with no per ball CPU loop.
+      Hundreds of balls collide and render in real time through GPU parallelization on OpenGL: one physics pass and one
+      instanced draw call, with state kept on the GPU between frames.
     </p>
     <!-- TODO: add ball count or frame time benchmark if available -->
 

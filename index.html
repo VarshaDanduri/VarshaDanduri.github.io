@@ -14,6 +14,7 @@
   <ul class="nav-links">
     <li><a href="#about">About</a></li>
     <li><a href="#portfolio" class="active">Portfolio</a></li>
+    <li><a href="resume.html">Resume</a></li>
   </ul>
 </nav>
 
@@ -34,6 +35,8 @@
         <a href="https://github.com/VarshaDanduri" target="_blank">GitHub</a>
         <a href="https://www.linkedin.com/in/varsha-danduri-a7b22b375/" target="_blank">LinkedIn</a>
         <a href="mailto:varshadanduri@gmail.com">Email</a>
+        <a href="resume.html">Resume</a>
+        <a href="assets/resume/Varsha_Danduri_Resume.pdf" download>PDF</a>
       </div>
     </div>
   </div>
@@ -87,51 +90,51 @@
           <img class="project-thumb" src="assets/metal-shader/metal-droplets.png" alt="Editable Blender shader extension" />
           <div class="project-info">
             <p class="project-name">Editable Blender Shader Extension</p>
-            <p class="project-subtitle">Custom editable procedural material in Blender, structured for export to MaterialX and OpenUSD</p>
-            <p class="project-tags">Blender, MaterialX, OpenUSD</p>
+            <p class="project-subtitle">Editable procedural material in Blender with a bake-to-OpenUSD path through Principled BSDF and UsdPreviewSurface</p>
+            <p class="project-tags">Blender, OpenUSD, UsdPreviewSurface</p>
+          </div>
+        </a>
+
+        <a class="project-card" href="kitin.html">
+          <img class="project-thumb" src="assets/kitin/terminal.png" alt="Kitin security remediation tool" />
+          <div class="project-info">
+            <p class="project-name">Kitin</p>
+            <p class="project-subtitle">Tool I built for state-driven git automation, append-only audit logs, and least-privilege SQL during security remediation</p>
+            <p class="project-tags">Process Automation, Go, Security Tooling</p>
           </div>
         </a>
 
       </div>
     </div>
 
-    <div id="software-engineering">
-      <h2>Software Engineering</h2>
+    <div id="graphics">
+      <h2>Graphics</h2>
       <div class="projects">
 
-        <a class="project-card" href="kitin.html">
-          <img class="project-thumb" src="assets/kitin/terminal.png" alt="Kitin" />
-          <div class="project-info">
-            <p class="project-name">Kitin</p>
-            <p class="project-subtitle">State-driven git automation for the full remediation lifecycle, with append-only audit logs and least-privilege SQL access</p>
-            <p class="project-tags">Process Automation, Go, Security</p>
-          </div>
-        </a>
-
         <a class="project-card" href="cpu-rasterizer.html">
-          <img class="project-thumb project-thumb-contain" src="assets/cpu-rasterizer/sponza.png" alt="CPU Rasterizer" />
+          <img class="project-thumb project-thumb-contain" src="assets/cpu-rasterizer/sponza.png" alt="CPU rasterization in C++" />
           <div class="project-info">
-            <p class="project-name">CPU Rasterizer</p>
-            <p class="project-subtitle">Software renderer from hello triangle to textured Sponza on the CPU</p>
-            <p class="project-tags">C++, Computer Graphics</p>
+            <p class="project-name">CPU Rasterization in C++</p>
+            <p class="project-subtitle">Built a CPU rasterization pipeline from edge-function triangles through depth-tested cubes to textured OBJ meshes</p>
+            <p class="project-tags">C++, Software Rendering</p>
           </div>
         </a>
 
         <a class="project-card" href="bouncing-ball.html">
           <video class="project-thumb" src="assets/bouncing-ball/bouncing-ball-video.mp4" muted loop autoplay playsinline></video>
           <div class="project-info">
-            <p class="project-name">Bouncing Ball</p>
-            <p class="project-subtitle">GPU-parallel ball physics with texture-based state and instanced rendering</p>
+            <p class="project-name">GPU Parallelization on OpenGL</p>
+            <p class="project-subtitle">GPU-parallelized ball physics and rendering with texture-based state and instanced draw calls</p>
             <p class="project-tags">OpenGL, GLSL, C++</p>
           </div>
         </a>
 
         <a class="project-card" href="pic-project.html">
-          <img class="project-thumb" src="assets/pic-project/web-pic3.jpg_edge.png" alt="Image Convolution" />
+          <img class="project-thumb" src="assets/pic-project/web-pic3.jpg_edge.png" alt="Data parallelization on GPU cluster" />
           <div class="project-info">
-            <p class="project-name">Image Convolution</p>
-            <p class="project-subtitle">Multithreaded 3×3 kernel filters in C (edge, blur, sharpen, emboss, and more)</p>
-            <p class="project-tags">C, pthreads, Image Processing</p>
+            <p class="project-name">Data Parallelization on GPU Cluster</p>
+            <p class="project-subtitle">Distributed 3×3 image convolution across a GPU cluster with data-parallel row partitioning</p>
+            <p class="project-tags">C, GPU Cluster, Image Processing</p>
           </div>
         </a>
 

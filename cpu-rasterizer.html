@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CPU Rasterizer: Varsha Danduri</title>
+  <title>CPU Rasterization in C++: Varsha Danduri</title>
   <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
 </head>
@@ -14,32 +14,34 @@
   <ul class="nav-links">
     <li><a href="index.html#about">About</a></li>
     <li><a href="index.html#portfolio" class="active">Portfolio</a></li>
+    <li><a href="resume.html">Resume</a></li>
   </ul>
 </nav>
 
 <div class="container container--narrow">
 
-  <a class="back-link" href="index.html#software-engineering">← Back to Portfolio</a>
+  <a class="back-link" href="index.html#graphics">← Back to Portfolio</a>
 
   <header class="project-header">
-    <h1>CPU Rasterizer</h1>
-    <p class="project-tags">C++ · Software Rendering · Computer Graphics</p>
+    <h1>CPU Rasterization in C++</h1>
+    <p class="project-tags">C++ · CPU Rendering · Rasterization</p>
   </header>
 
   <article class="project-body">
     <h3>Problem</h3>
     <p>
-      GPU rendering hides the pipeline behind driver APIs. To understand how meshes become pixels, you need a renderer
-      where every stage is visible: rasterization, depth testing, attribute interpolation, and texture sampling.
+      GPU rendering hides the rasterization pipeline behind driver APIs. To understand how meshes become pixels, you
+      need a CPU-side process where every stage is visible: triangle setup, depth testing, attribute interpolation, and
+      texture sampling.
     </p>
 
     <h3>Solution</h3>
     <p>
-      A software rasterizer built from scratch on the CPU, following Tayfun Kayhan's
+      I built a CPU rasterization process in C++, following Tayfun Kayhan's
       <a href="https://tayfunkayhan.wordpress.com/2018/11/24/rasterization-in-one-weekend/" target="_blank">Rasterization in One Weekend</a>
       series. The repo grows in three stages: a flat triangle, shaded cubes in perspective, then a textured Sponza
       atrium loaded from disk. Each stage reuses the same edge function core; later stages add depth testing,
-      backface culling, and perspective correct attribute interpolation.
+      backface culling, and perspective-correct attribute interpolation.
     </p>
 
     <h3>Part I: Hello triangle</h3>
@@ -170,9 +172,8 @@ glm::vec2 texCoords = glm::vec2(uOverW, vOverW) / perspDenom;</code></pre>
 
     <h3>Outcome</h3>
     <p>
-      The renderer produces correct PPM output from hello triangle through a fully textured architectural scene, with
-      a scale invariant camera derived from model bounds. Switch between the three demos in <code>main.cpp</code> by
-      uncommenting <code>HelloTriangle</code>, <code>Cube</code>, or <code>GoWild</code>.
+      The CPU rasterization process produces correct PPM output from a hello triangle through a fully textured
+      architectural scene, with a scale-invariant camera derived from model bounds.
     </p>
 
     <p>

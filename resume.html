@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Resume: Varsha Danduri</title>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<nav>
+  <a class="nav-name" href="index.html">Varsha Danduri</a>
+  <ul class="nav-links">
+    <li><a href="index.html#about">About</a></li>
+    <li><a href="index.html#portfolio">Portfolio</a></li>
+    <li><a href="resume.html" class="active">Resume</a></li>
+  </ul>
+</nav>
+
+<div class="container container--resume">
+
+  <div class="resume-toolbar">
+    <a class="download-btn" href="assets/resume/Varsha_Danduri_Resume.pdf" download>Download PDF</a>
+    <a class="download-btn download-btn--secondary" href="assets/resume/Varsha_Danduri_Resume.pdf" target="_blank" rel="noopener">Open in new tab</a>
+    <a class="download-btn download-btn--secondary" href="#web-resume">Web version</a>
+  </div>
+
+  <div class="pdf-viewer">
+    <iframe
+      src="assets/resume/Varsha_Danduri_Resume.pdf"
+      title="Varsha Danduri Resume PDF"
+    ></iframe>
+  </div>
+
+  <p class="pdf-viewer-fallback">
+    PDF preview not showing?
+    <a href="assets/resume/Varsha_Danduri_Resume.pdf" target="_blank" rel="noopener">Open the PDF directly</a>
+    or scroll to the <a href="#web-resume">web version</a> below.
+  </p>
+
+  <article class="resume" id="web-resume">
+    <p class="web-resume-label">Web version</p>
+
+    <header class="resume-header">
+      <h1>Varsha Danduri</h1>
+      <p class="resume-contact">
+        <a href="tel:+13023673997">(302) 367-3997</a>
+        · <a href="mailto:varshadanduri@gmail.com">varshadanduri@gmail.com</a>
+        · <a href="https://github.com/VarshaDanduri" target="_blank">github.com/VarshaDanduri</a>
+        · <a href="https://www.linkedin.com/in/varsha-danduri-a7b22b375/" target="_blank">linkedin.com/in/varsha-danduri-a7b22b375</a>
+      </p>
+    </header>
+
+    <section class="resume-section">
+      <h2>Education</h2>
+      <div class="resume-entry">
+        <div class="resume-entry-head">
+          <p class="resume-entry-title">University of Delaware, Honors College</p>
+          <p class="resume-entry-date">Newark, DE · May 2028</p>
+        </div>
+        <p class="resume-entry-sub">B.S. + M.S. in Computer Science, 4+1 Accelerated Program · GPA 3.86</p>
+      </div>
+    </section>
+
+    <section class="resume-section">
+      <h2>Skills &amp; Certifications</h2>
+      <p><strong>Languages:</strong> Python, C, C++, Java, JavaScript / TypeScript, SQL</p>
+      <p><strong>AI / ML:</strong> Model training and evaluation, NLP (tokenization, named-entity recognition), classifiers on medical and conversational data, LLM APIs (Anthropic, OpenAI), CrewAI multi-agent pipelines, GPU acceleration</p>
+      <p><strong>Platforms &amp; Tools:</strong> Flask, Node.js, PostgreSQL, Snowflake, GitHub Actions, VS Code, Conda, Android Studio, Xcode, Neovim</p>
+      <p><strong>Certifications:</strong> PCEP Certified Python (2024), Udemy Python, Udemy ML / AI</p>
+    </section>
+
+    <section class="resume-section">
+      <h2>Research Experience</h2>
+
+      <div class="resume-entry">
+        <div class="resume-entry-head">
+          <p class="resume-entry-title">Undergraduate Researcher, Healthy LAIfe Research Lab, University of Delaware</p>
+          <p class="resume-entry-date">June 2025 - Present</p>
+        </div>
+        <ul>
+          <li>Built one of the first multimodal data pipelines on the widely used MIMIC-IV health database, integrating structured records, clinical text, medical images, and physiological signals into a single system for medical research. Open-sourced on GitHub with 300+ stars.</li>
+          <li>Trained models on the pipeline's output for medical research tasks and built a web interface that lets researchers define cohorts and pull data efficiently.</li>
+          <li>Co-authored a research paper currently under review; presented a scientific poster at UD Summer Scholars and was invited to present at the Naval Academy Science and Engineering Conference (November 2025).</li>
+        </ul>
+      </div>
+
+      <div class="resume-entry">
+        <div class="resume-entry-head">
+          <p class="resume-entry-title">Chatbot Safety &amp; Risk-Deferral Model</p>
+          <p class="resume-entry-date">Research · Python, Machine Learning, App Deployment</p>
+        </div>
+        <ul>
+          <li>Built a model, deployed in an app, that reads user responses in chatbot conversations and flags signs of mental-health crisis in real time.</li>
+          <li>Designed a deferral layer: when risk is flagged, the chatbot steps back and the conversation is routed to safety resources and escalation instead of a generated reply, directly targeting a known failure mode of conversational AI.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="resume-section">
+      <h2>Experience</h2>
+
+      <div class="resume-entry">
+        <div class="resume-entry-head">
+          <p class="resume-entry-title">Agentic Software Engineer, University of Delaware</p>
+          <p class="resume-entry-date">December 2025 - May 2026</p>
+        </div>
+        <ul>
+          <li>Designed and deployed a multi-step agentic workflow (Windmill) that runs the department's TA / RA recruiting pipeline end-to-end, plus a full-stack dashboard (React, Node.js, PostgreSQL) that staff use to manage every student worker.</li>
+        </ul>
+      </div>
+
+      <div class="resume-entry">
+        <div class="resume-entry-head">
+          <p class="resume-entry-title">Software Engineer, University of Delaware IT</p>
+          <p class="resume-entry-date">February 2026 - Present</p>
+        </div>
+        <ul>
+          <li>Engineered a CI/CD pipeline (GitHub Actions, Jest) validating a jQuery migration tool used across the university's enterprise web applications.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="resume-section">
+      <h2>Projects</h2>
+
+      <div class="resume-entry">
+        <div class="resume-entry-head">
+          <p class="resume-entry-title">NLP Python Package for Medical Notes</p>
+          <p class="resume-entry-date">C++, Python, GPU Acceleration</p>
+        </div>
+        <ul>
+          <li>Developed a Python package with a C++ core for processing medical notes: tokenization for training transformers and classifiers, GPU-accelerated text segmentation, and automatic disease named-entity recognition mapped to ICD codes.</li>
+        </ul>
+      </div>
+
+      <div class="resume-entry">
+        <div class="resume-entry-head">
+          <p class="resume-entry-title">Kitin, Agentic Codebase Security Dashboard</p>
+          <p class="resume-entry-date">Startup, funded by University of Delaware · AI Agents, Cloudflare, React</p>
+        </div>
+        <ul>
+          <li>Built an autonomous AI agent that does contextual code-logic analysis to catch vulnerabilities (e.g., SQL injection) that line-by-line tools miss, paired with a fine-tuned LoRA model and a git-automation engine with a full audit trail.</li>
+        </ul>
+      </div>
+
+      <div class="resume-entry">
+        <div class="resume-entry-head">
+          <p class="resume-entry-title">Skin Disease Classification App</p>
+          <p class="resume-entry-date">Machine Learning, Node.js, Android (Edge)</p>
+        </div>
+        <ul>
+          <li>Trained an image classification model on the DermNet dataset and deployed it in a web and Android app for early detection and awareness of skin conditions.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="resume-section">
+      <h2>Awards &amp; Recognition</h2>
+      <ul>
+        <li>Best Modeling, UD DataQuest 2026: strongest predictive model in a university-wide data science competition.</li>
+      </ul>
+    </section>
+
+  </article>
+
+</div>
+
+<footer>
+  © 2026 Varsha Danduri · Hosted on <a href="https://pages.github.com">GitHub Pages</a>
+</footer>
+
+</body>
+</html>

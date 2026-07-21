@@ -14,6 +14,7 @@
   <ul class="nav-links">
     <li><a href="index.html#about">About</a></li>
     <li><a href="index.html#portfolio" class="active">Portfolio</a></li>
+    <li><a href="resume.html">Resume</a></li>
   </ul>
 </nav>
 
@@ -23,7 +24,7 @@
 
   <header class="project-header">
     <h1>Editable Blender Shader Extension</h1>
-    <p class="project-tags">Blender · MaterialX · OpenUSD · Procedural Materials</p>
+    <p class="project-tags">Blender · OpenUSD · UsdPreviewSurface · Procedural Materials</p>
   </header>
 
   <article class="project-body">
@@ -31,7 +32,7 @@
     <p>
       A weathered metallic surface with water droplets is difficult to paint by hand, and one-off shader node graphs
       do not travel well into a pipeline. Artists need editable parameters, and downstream tools need a material that
-      can export to interchange formats like MaterialX and OpenUSD.
+      can export to interchange formats like OpenUSD through baked PBR textures and UsdPreviewSurface.
     </p>
 
     <h3>Solution</h3>
@@ -43,9 +44,8 @@
     </p>
 
     <p>
-      The node group is structured so each layer maps cleanly to MaterialX nodes and to UsdPreviewSurface fields for
-      OpenUSD export. Noise-driven normal detail becomes interchangeable height/normal data, and the metallic response
-      aligns with standard roughness/metallic inputs rather than Blender-only node wiring.
+      The node group is structured for pipeline handoff: procedural layers can be baked to base color, roughness,
+      metallic, and normal maps, then assigned through Principled BSDF and exported as OpenUSD UsdPreviewSurface.
     </p>
 
     <figure>
@@ -93,19 +93,73 @@
       <figcaption>Final render with metallic BSDF and droplet normals</figcaption>
     </figure>
 
-    <h3>MaterialX and OpenUSD export</h3>
+    <h3>OpenUSD export pipeline</h3>
     <p>
-      The extension is built for pipeline handoff: procedural layers are grouped and named so they can be translated to
-      MaterialX (<code>mx_noise</code>, <code>mx_bump</code>, standard surface outputs) or baked and assigned through
-      UsdPreviewSurface on OpenUSD export. Exposed inputs on the node group become shader parameters in the exported
-      material definition rather than buried inside the graph.
+      Procedural nodes do not export directly. The reliable path is to bake the procedural layers to image textures,
+      plug those into Principled BSDF, and let Blender's USD exporter convert Principled BSDF to UsdPreviewSurface.
+      The procedural node group stays in the file (disabled, not deleted) as the editable source; the baked material
+      is the export copy.
     </p>
-    <!-- TODO: add export tool or addon name once wired up -->
+
+    <h3>1. UV setup</h3>
+    <p>
+      The mesh needs a proper UV unwrap because baking writes to UV space. For the sphere, Smart UV Project or Unwrap
+      in edit mode is enough.
+    </p>
+
+    <h3>2. Bake target images</h3>
+    <p>
+      In the Shader Editor, create one Image Texture node per map: base color, roughness, metallic, and normal. Name
+      them clearly (<code>metal_basecolor</code>, <code>metal_roughness</code>, <code>metal_metallic</code>,
+      <code>metal_normal</code>). 2048×2048 is a reasonable starting size. Set the normal map image to Non-Color;
+      base color stays sRGB. Select the target Image Texture node before each bake so Cycles writes to the right image.
+    </p>
+
+    <h3>3. Bake in Cycles</h3>
+    <p>
+      Switch to Cycles (Render Properties → Render Engine → Cycles). In Render Properties → Bake:
+    </p>
+    <p>
+      <strong>Base color:</strong> Bake Type = Diffuse, uncheck Direct and Indirect, keep only Color (albedo without
+      lighting baked in).<br />
+      <strong>Roughness:</strong> Bake Type = Roughness.<br />
+      <strong>Metallic:</strong> No built-in Metallic bake type. Temporarily connect the metallic factor to an Emission
+      shader's color input and bake as Emit, then restore the original graph.<br />
+      <strong>Normal:</strong> Bake Type = Normal, Space = Tangent.
+    </p>
+
+    <h3>4. Normal map range on export</h3>
+    <p>
+      Cycles stores tangent-space normals as a standard 0-1 image (128, 128, 255 = flat), which is correct for the
+      file. The common failure is in the USD exporter feeding that 0-1 texture into UsdPreviewSurface's normal input
+      without remapping to the signed -1 to 1 range. If normals look skewed or inverted in Houdini or usdview after
+      export, open the <code>.usda</code> and check the normal <code>UsdUVTexture</code> node: it should have scale
+      <code>(2, 2, 2, 1)</code> and bias <code>(-1, -1, -1, 0)</code>. Add them manually if missing, or confirm your
+      Blender version includes the fix in its changelog.
+    </p>
+
+    <h3>5. Rebuild with baked textures</h3>
+    <p>
+      Add Image Texture nodes for each baked map and plug them into a fresh Principled BSDF: base color → Base Color,
+      roughness → Roughness, metallic → Metallic, normal → Normal Map node → Normal input. The original procedural
+      group remains available for iteration; this Principled setup is what gets exported.
+    </p>
+
+    <h3>6. Export and verify</h3>
+    <p>
+      File → Export → Universal Scene Description (<code>.usd</code> / <code>.usda</code> / <code>.usdc</code>) with
+      Materials enabled. Use <code>.usda</code> first so you can read the shader network and confirm
+      UsdPreviewSurface with UsdUVTexture nodes feeding it. Round-trip in usdview or Blender's USD importer in a fresh
+      scene to verify the look outside the original file.
+    </p>
+    <!-- TODO: add screenshot of .usda UsdPreviewSurface network -->
+    <!-- TODO: add usdview round-trip render -->
 
     <h3>Outcome</h3>
     <p>
-      The finished material gives condensation on cold steel entirely from procedural nodes, while staying editable in
-      Blender and structured for export to MaterialX or OpenUSD without rebuilding the look from scratch.
+      The procedural extension stays editable in Blender, and the baked Principled material exports through OpenUSD as
+      UsdPreviewSurface with standard PBR texture inputs. Pipeline handoff becomes a concrete .usda asset rather than a
+      Blender-only node graph.
     </p>
   </article>
 
